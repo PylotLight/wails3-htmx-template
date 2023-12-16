@@ -13,7 +13,7 @@ import (
 	"github.com/wailsapp/wails/v3/pkg/application"
 )
 
-//go:embed frontend/dist
+//go:embed all:frontend/dist
 var assets embed.FS
 var version = "0.0.0"
 
@@ -36,7 +36,7 @@ func main() {
 	})
 	// Create window
 	app.NewWebviewWindowWithOptions(application.WebviewWindowOptions{
-		Title: "Plain Bundle",
+		Title: "Main Window",
 		CSS:   `body { background-color: rgba(255, 255, 255, 0); } .main { color: white; margin: 20%; }`,
 		Mac: application.MacWindow{
 			InvisibleTitleBarHeight: 50,
@@ -47,6 +47,40 @@ func main() {
 		URL: "/",
 	})
 
+	// Systray Window
+	systemTray := app.NewSystemTray()
+	window := app.NewWebviewWindowWithOptions(application.WebviewWindowOptions{
+		Name:          "systray",
+		Width:         500,
+		Height:        800,
+		Frameless:     true,
+		AlwaysOnTop:   true,
+		Hidden:        true,
+		DisableResize: true,
+		ShouldClose: func(window *application.WebviewWindow) bool {
+			window.Hide()
+			return false
+		},
+		Windows: application.WindowsWindow{
+			HiddenOnTaskbar: true,
+		},
+		KeyBindings: map[string]func(window *application.WebviewWindow){
+			"F12": func(window *application.WebviewWindow) {
+				systemTray.OpenMenu()
+			},
+		},
+		URL: "/systray/",
+	})
+
+	// Systray Menu
+	myMenu := app.NewMenu()
+	systemTray.SetMenu(myMenu)
+	myMenu.Add("Quit").OnClick(func(ctx *application.Context) {
+		app.Quit()
+	})
+
+	// Attach extra windows
+	systemTray.AttachWindow(window).WindowOffset(5)
 	err := app.Run()
 
 	if err != nil {
@@ -77,12 +111,20 @@ func NewChiRouter() *chi.Mux {
 	return r
 }
 
-// TODO
-// - Add support for htmx
-// no js
-//chi
-//tailwind - done
-//daisyui
-//systray
-//multiwindow
-//astro?
+/* TODO
+UX Idea:
+So while keeping the default wails template view, we can add a hover menu that opens an overlay grid with the options for different views,
+that then uses htmx + astro to render the different views.
+
+
+- Add support for htmx
+no js
+chi - done?
+tailwind - done
+daisyui
+systray
+multiwindow
+astro?
+
+
+*/
