@@ -71,7 +71,7 @@ func main() {
 		},
 		URL: "/systray/",
 	})
-
+	
 	// Systray Menu
 	myMenu := app.NewMenu()
 	systemTray.SetMenu(myMenu)
@@ -122,7 +122,7 @@ no js
 chi - done?
 tailwind - done
 daisyui
-systray
+systray - added, but will be a view controller or something?
 multiwindow
 astro?
 
