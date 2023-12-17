@@ -43,3 +43,11 @@ import SiteLayout from "../layouts/SiteLayout.astro";
     </p>
   </div>
 </SiteLayout>
+<script>
+  let count = 0;
+  const Button = document.getElementById("counter")!;
+  Button.addEventListener("click", () => {
+    count++;
+    Button.innerHTML = `count is ${count}`;
+  });
+</script>
