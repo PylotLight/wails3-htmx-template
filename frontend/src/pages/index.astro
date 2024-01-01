@@ -32,10 +32,18 @@ import SiteLayout from "../layouts/SiteLayout.astro";
       Hello Wails!
     </h1>
     <div class="card p-[2em]">
+      <label>JS Button</label>
       <button
         class="rounded-[8px] border-[1px] border-[solid] border-[transparent] px-[1.2em] py-[0.6em] text-[1em] font-medium [font-family:inherit] bg-[#1a1a1a] cursor-pointer [transition:border-color_0.25s] hover:border-[#646cff] outline-[4px_auto_-webkit-focus-ring-color]"
         id="counter"
         type="button">count is 0</button
+      >
+      <label>HTMX Button</label>
+      <button
+        class="rounded-[8px] border-[1px] border-[solid] border-[transparent] px-[1.2em] py-[0.6em] text-[1em] font-medium [font-family:inherit] bg-[#1a1a1a] cursor-pointer [transition:border-color_0.25s] hover:border-[#646cff] outline-[4px_auto_-webkit-focus-ring-color]"
+        type="button"
+        hx-get="/counter"
+        hx-target="this">count is 0</button
       >
     </div>
     <p class="read-the-docs text-[#888]">

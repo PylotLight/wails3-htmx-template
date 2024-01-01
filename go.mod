@@ -24,13 +24,11 @@ require (
 	github.com/jchv/go-winloader v0.0.0-20210711035445-715c2860da7e // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
 	github.com/kevinburke/ssh_config v1.2.0 // indirect
-	github.com/kr/pretty v0.3.1 // indirect
 	github.com/leaanthony/go-ansi-parser v1.6.1 // indirect
 	github.com/leaanthony/u v1.1.1 // indirect
 	github.com/lmittmann/tint v1.0.3 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.20 // indirect
-	github.com/mitchellh/go-homedir v1.1.0 // indirect
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
 	github.com/modern-go/reflect2 v1.0.2 // indirect
 	github.com/pjbgf/sha1cd v0.3.0 // indirect
@@ -39,11 +37,10 @@ require (
 	github.com/samber/lo v1.39.0 // indirect
 	github.com/sergi/go-diff v1.3.1 // indirect
 	github.com/skeema/knownhosts v1.2.1 // indirect
-	github.com/stretchr/testify v1.8.4 // indirect
 	github.com/wailsapp/go-webview2 v1.0.10 // indirect
 	github.com/xanzy/ssh-agent v0.3.3 // indirect
-	golang.org/x/crypto v0.16.0 // indirect
-	golang.org/x/exp v0.0.0-20231214170342-aacd6d4b4611 // indirect
+	golang.org/x/crypto v0.17.0 // indirect
+	golang.org/x/exp v0.0.0-20231226003508-02704c960a9b // indirect
 	golang.org/x/mod v0.14.0 // indirect
 	golang.org/x/sys v0.15.0 // indirect
 	golang.org/x/tools v0.16.1 // indirect
@@ -51,9 +48,8 @@ require (
 )
 
 require (
-	github.com/a-h/templ v0.2.476
-	github.com/go-chi/chi/v5 v5.0.10
-	github.com/imdario/mergo v0.3.16 // indirect
+	github.com/a-h/templ v0.2.501
+	github.com/go-chi/chi/v5 v5.0.11
 	github.com/wailsapp/mimetype v1.4.1 // indirect
 	golang.org/x/net v0.19.0 // indirect
 )

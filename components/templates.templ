@@ -18,6 +18,25 @@ templ Button(classes string, hxUrl string, hxTarget string, hxSwap string,method
 	>{ label }</button>
 }
 
+templ twButton(label string) {
+	<button
+ 		class="w-full px-4 py-6 rounded-md font-semibold backdrop-filter backdrop-blur-lg backdrop-saturate-[180%] bg-[rgba(19,_48,_97,_0.75)] rounded-[12px] border-[1px] border-[solid] border-[rgba(255,255,255,0.125)] text-gray-300 hover:bg-gray-800 hover:text-white"
+ 		type="button"
+ 		hx-get="/counter"
+ 		hx-target="this"
+	>{ label }</button>
+}
+
+templ ButtonGlass(text string) {
+	<button
+ 		type="button"
+ 		hx-get="/greet"
+ 		class="w-full px-4 py-4 rounded-md font-semibold text-sm bg-transparent text-gray-300 hover:bg-gray-800 hover:text-white"
+	>
+		{ text }
+	</button>
+}
+
 templ TextInput(name string, placeholder string, method string,endpoint string,hxTrigger string) {
 	<input
  		type="text"
@@ -41,6 +60,25 @@ templ VersionComponent(Version string, UpdateText string) {
 			<div class="stat-title">Current App Version</div>
 			<div class="stat-value">{ Version }</div>
 			<div class="stat-desc">{ UpdateText }</div>
+		</div>
+	</div>
+}
+
+templ VersionComponent2(title string, content string) {
+	<div class="bg-gray-300 max-w-sm mx-auto rounded-md bg-clip-padding backdrop-filter backdrop-blur-lg bg-opacity-10 border border-gray-800">
+		<div class="relative px-4 py-5 sm:p-6">
+			<h2 class="text-lg font-semibold text-gray-900 mb-2">Card Title</h2>
+			<p class="text-base text-white-800">Card content goes here.</p>
+		</div>
+	</div>
+}
+
+templ VersionComponent3(title string, content string) {
+	<div class="relative max-w-sm mx-auto rounded-lg shadow-md overflow-hidden">
+		<div class="absolute inset-0 bg-gray-600 bg-opacity-50 backdrop-filter backdrop-blur-lg"></div>
+		<div class="relative px-4 py-5 sm:p-6">
+			<h2 class="text-lg font-semibold text-gray-400 mb-2">{ title }</h2>
+			<p class="text-base text-white-100">{ content }</p>
 		</div>
 	</div>
 }
@@ -74,7 +112,7 @@ templ TestPage(target string, hxswap string) {
 	@Button("","/modal",target,hxswap,"post","Preview Modal")
 }
 
-templ ModalPreview(title string, data string ) {
+templ Modal(title string, data string ) {
 	<dialog id="modal" class="modal modal-bottom" open>
 		<div class="modal-box">
 			<h3 class="font-bold text-lg">{ title }</h3>
@@ -84,4 +122,21 @@ templ ModalPreview(title string, data string ) {
 			<button>close</button>
 		</form>
 	</dialog>
+}
+
+templ Counter(count string) {
+	@twButton("count is " + count)
+}
+
+templ Events() {
+	// button and also some divs to show content 
+	// <div hx-sse="connect:/event">
+	// 	<div hx-sse="swap:eventName1">
+	// 		...
+	// 	</div>
+	// 	<div hx-sse="swap:eventName2">
+	// 		...
+	// 	</div>
+	// </div>
+	@Button("","/event","#modal","innerHTML","get","Trigger Event")
 }
