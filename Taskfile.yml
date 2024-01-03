@@ -372,7 +372,7 @@ tasks:
     summary: Build the frontend project
     dir: frontend
     sources:
-      - '**/*.astro'
+      - '**/*.html'
     generates:
       - dist/*
     deps:
@@ -406,6 +406,7 @@ tasks:
     summary: Runs the frontend in development mode
     dir: frontend
     deps:
+      - task: build:frontend
       - task: install:frontend:deps
     cmds:
       - bun run dev
