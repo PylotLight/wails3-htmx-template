@@ -128,38 +128,110 @@ templ Counter(count string) {
 	@twButton("count is " + count)
 }
 
-// <div
-//     class="fixed top-0 left-0 z-50 bg-transparent w-full h-full bg-[#111129] bg-[radial-gradient(at_47%_33%,_hsl(162.00,_77%,_40%)_0,_transparent_59%),_radial-gradient(at_82%_65%,_hsl(217.63,_57.99999999999999%,_41%)_0,_transparent_55%)]">
-//     <div class="absolute top-0 left-0 w-full h-full bg-black/20 backdrop-blur-md">
-//       <!-- Sidebar -->
-//       <div id="sidebar" hx-get="/sidebar" hx-target="this" hx-trigger="load">
-//       </div>
-//       <!-- Sidebar -->
-//       <div class="relative mx-auto my-auto px-4 py-3 rounded-lg text-white sm:w-48 overflow-auto h-full">
-//         <!-- Content -->
-//         None
-//         <!-- Content -->
-//       </div>
-//     </div>
-//   </div>
+templ Index() {
+	<div class="block">
+		<a
+ 			href="https://wails.io"
+ 			class="inline font-medium text-[#646cff] [text-decoration:inherit] hover:text-[#535bf2]"
+ 			target="_blank"
+		>
+			<img
+ 				src="/wails.png"
+ 				class="logo inline h-[6em] p-[0.5em] hover:[filter:drop-shadow(0_0_2em_#646cffaa)]"
+ 				alt="Wails logo"
+			/>
+		</a>
+		<a
+ 			href="https://developer.mozilla.org/en-US/docs/Web/JavaScript"
+ 			class="inline font-medium text-[#646cff] [text-decoration:inherit] hover:text-[#535bf2]"
+ 			target="_blank"
+		>
+			<img
+ 				src="/javascript.svg"
+ 				class="logo vanilla inline h-[6em] p-[0.5em] hover:[filter:drop-shadow(0_0_2em_#646cffaa)] hover:[filter:drop-shadow(0_0_2em_#f7df1eaa)]"
+ 				alt="JavaScript logo"
+			/>
+		</a>
+		<h1 class="mt-10 mb-10 text-[3.2em] leading-[1.1] font-semibold block font-bold">
+			Hello Wails!
+		</h1>
+		<div class="card p-[2em]">
+			<div class="flex justify-around items-center">
+				<label>JS Button</label>
+				<label>HTMX Button</label>
+			</div>
+			<div class="flex justify-around items-center">
+				<button
+ 					class="rounded-[8px] border-[1px] border-[solid] border-[transparent] px-[1.2em] py-[0.6em] text-[1em] font-medium [font-family:inherit] bg-[#1a1a1a] cursor-pointer [transition:border-color_0.25s] hover:border-[#646cff] outline-[4px_auto_-webkit-focus-ring-color]"
+ 					id="counter"
+ 					type="button"
+				>count is 0</button>
+				<button
+ 					class="rounded-[8px] border-[1px] border-[solid] border-[transparent] px-[1.2em] py-[0.6em] text-[1em] font-medium [font-family:inherit] bg-[#1a1a1a] cursor-pointer [transition:border-color_0.25s] hover:border-[#646cff] outline-[4px_auto_-webkit-focus-ring-color]"
+ 					type="button"
+ 					hx-get="/counter"
+ 					hx-target="this"
+				>count is 0</button>
+			</div>
+		</div>
+		<p class="read-the-docs text-[#888]">
+			Click on the Wails logo to learn more
+		</p>
+	</div>
+	<script>
+  let count = 0;
+  const Button = document.getElementById("counter");
+  Button.addEventListener("click", () => {
+    count++;
+    Button.innerHTML = `count is ${count}`;
+  });
+</script>
+}
+
+templ Systray() {
+	<html
+ 		class="font-[Inter,_Avenir,_Helvetica,_Arial,_sans-serif] text-[16px] leading-[24px] font-normal [color-scheme:light_dark] text-[rgba(255,_255,_255,_0.87)] bg-[#242424] antialiased"
+ 		lang="en"
+	>
+		<head>
+			<meta charset="UTF-8"/>
+			<link rel="icon" type="image/svg+xml" href="/wails.png"/>
+			<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+			<script src="https://unpkg.com/htmx.org"></script>
+			<link rel="stylesheet" href="src/index.css"/>
+			<title>Wails</title>
+		</head>
+		<body class="m-0 flex place-items-center min-w-[320px] min-h-screen">
+			<div class="max-w-screen-xl mx-[auto] my-[0] p-8 text-center" id="app">
+				@SideBar()
+			</div>
+		</body>
+	</html>
+}
 
 templ SideBar() {
-	<div
- 		class="fixed left-0 top-0 h-full w-12 z-50 overflow-hidden bg-transparent backdrop-blur-md hover:w-40 transition-all duration-200"
-	>
-		<ul
- 			class="flex flex flex-col flex-wrap content-start items-center space-y-4 pt-8"
-		>
+	<div class="fixed top-0 left-0 z-50 bg-transparent w-full h-full bg-[#111129] bg-[radial-gradient(at_47%_33%,_hsl(162.00,_77%,_40%)_0,_transparent_59%),_radial-gradient(at_82%_65%,_hsl(217.63,_57.99999999999999%,_41%)_0,_transparent_55%)]">
+		<div class="absolute top-0 left-0 w-full h-full bg-black/20 backdrop-blur-md">
 			<div
- 				class="fixed left-0 top-0 h-full w-12 z-50 overflow-hidden bg-transparent backdrop-blur-md hover:w-36 transition-all duration-200"
+ 				class="fixed left-0 top-0 h-full w-12 z-50 overflow-hidden bg-transparent backdrop-blur-md hover:w-40 transition-all duration-200"
 			>
-				<ul class="flex flex-col items-start justify-start space-y-4 pt-8">
-					@SystrayIcon("/bell.svg","Notifications")
-					@SystrayIcon("/updates.svg","Updates")
-					@SystrayIcon("/settings.svg","Settings")
+				<ul
+ 					class="flex flex flex-col flex-wrap content-start items-center space-y-4 pt-8"
+				>
+					<div
+ 						class="fixed left-0 top-0 h-full w-12 z-50 overflow-hidden bg-transparent backdrop-blur-md hover:w-36 transition-all duration-200"
+					>
+						<ul class="flex flex-col items-start justify-start space-y-4 pt-8">
+							@SystrayIcon("/bell.svg","Notifications")
+							@SystrayIcon("/updates.svg","Updates")
+							@SystrayIcon("/settings.svg","Settings")
+						</ul>
+					</div>
 				</ul>
 			</div>
-		</ul>
+			// Content
+			<div class="relative mx-auto my-auto px-4 py-3 rounded-lg text-white sm:w-48 overflow-auto h-full"></div>
+		</div>
 	</div>
 }
 

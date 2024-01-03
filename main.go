@@ -90,7 +90,7 @@ func main() {
 				systemTray.OpenMenu()
 			},
 		},
-		URL: "/systray/",
+		URL: "/",
 	})
 
 	app.NewWebviewWindowWithOptions(application.WebviewWindowOptions{
@@ -156,6 +156,7 @@ func NewChiRouter() *chi.Mux {
 	r.Post("/greet", components.Greet)
 	r.Get("/modal", templ.Handler(components.TestPage("#modal", "outerHTML")).ServeHTTP)
 	r.Post("/modal", templ.Handler(components.Modal("Title for the modal", "Sample Data")).ServeHTTP)
+	r.Get("/systray", templ.Handler(components.Systray()).ServeHTTP)
 	r.Get("/sidebar", templ.Handler(components.SideBar()).ServeHTTP)
 	r.Get("/counter", CounterHandler(c))
 	r.Get("/events", templ.Handler(components.Events()).ServeHTTP)
