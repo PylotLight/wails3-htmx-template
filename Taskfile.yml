@@ -409,6 +409,8 @@ tasks:
       - task: install:frontend:deps
     cmds:
       - bun run dev
+    log_options:
+      verbose: true
 
   dev:
     summary: Runs the application in development mode

@@ -128,6 +128,39 @@ templ Counter(count string) {
 	@twButton("count is " + count)
 }
 
+templ SideBar() {
+	<div
+ 		class="fixed left-0 top-0 h-full w-12 z-50 overflow-hidden bg-transparent backdrop-blur-md hover:w-40 transition-all duration-200"
+	>
+		<ul
+ 			class="flex flex flex-col flex-wrap content-start items-center space-y-4 pt-8"
+		>
+			<div
+ 				class="fixed left-0 top-0 h-full w-12 z-50 overflow-hidden bg-transparent backdrop-blur-md hover:w-36 transition-all duration-200"
+			>
+				<ul class="flex flex-col items-start justify-start space-y-4 pt-8">
+					@SystrayIcon("/bell.svg","Notifications")
+					@SystrayIcon("/updates.svg","Updates")
+					@SystrayIcon("/settings.svg","Settings")
+				</ul>
+			</div>
+		</ul>
+	</div>
+}
+
+templ SystrayIcon(SVG string,Text string) {
+	<li class="hover:group">
+		<button class="flex items-center space-x-2">
+			<img
+ 				src={ SVG }
+ 				alt="icon"
+ 				class="w-10 h-10 text-xl group-hover:text-3xl transition-all duration-200 hover:scale-110"
+			/>
+			<span class="text-lg transition-all duration-200">{ Text }</span>
+		</button>
+	</li>
+}
+
 templ Events() {
 	// button and also some divs to show content 
 	// <div hx-sse="connect:/event">

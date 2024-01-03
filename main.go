@@ -70,13 +70,13 @@ func main() {
 
 	// Systray Window
 	systemTray := app.NewSystemTray()
-	app.NewWebviewWindowWithOptions(application.WebviewWindowOptions{
+	window := app.NewWebviewWindowWithOptions(application.WebviewWindowOptions{
 		Name:          "systray",
 		Width:         500,
 		Height:        800,
-		Frameless:     false,
-		AlwaysOnTop:   false,
-		Hidden:        false,
+		Frameless:     true,
+		AlwaysOnTop:   true,
+		Hidden:        true,
 		DisableResize: true,
 		ShouldClose: func(window *application.WebviewWindow) bool {
 			window.Hide()
@@ -125,7 +125,7 @@ func main() {
 	})
 
 	// Attach extra windows
-	// systemTray.AttachWindow(window).WindowOffset(5)
+	systemTray.AttachWindow(window).WindowOffset(5)
 	err := app.Run()
 
 	if err != nil {
@@ -156,6 +156,7 @@ func NewChiRouter() *chi.Mux {
 	r.Post("/greet", components.Greet)
 	r.Get("/modal", templ.Handler(components.TestPage("#modal", "outerHTML")).ServeHTTP)
 	r.Post("/modal", templ.Handler(components.Modal("Title for the modal", "Sample Data")).ServeHTTP)
+	r.Get("/sidebar", templ.Handler(components.SideBar()).ServeHTTP)
 	r.Get("/counter", CounterHandler(c))
 	r.Get("/events", templ.Handler(components.Events()).ServeHTTP)
 	// Custom Endpoints
@@ -215,6 +216,9 @@ So while keeping the default wails template view, we can add a hover menu that o
 that then uses htmx + astro to render the different views.
 
 Systray usage:
+New idea:
+Change notifications to be purely for notifications, with settings and updates done in the main window via bottom/top/sidebar.
+Old:
  - User/System settings0
  - Notifications
  - Realtime updates (time, background tasks)
@@ -236,6 +240,7 @@ astro - done
 add embedded files demo/user config/embedded binary - store in webview storage
 streaming? sse/websockets/chunked/events?
 notifications?
+db
 
 1. go to events page which loads the page
 2. button to activate the call to events
