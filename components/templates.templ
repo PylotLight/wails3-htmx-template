@@ -1,0 +1,305 @@
+package components
+
+import "net/http"
+
+templ Button(classes string, hxUrl string, hxTarget string, hxSwap string,method string,label string) {
+	<button
+ 		class="btn { classes }"
+ 		type="submit"
+ 		hx-target={ hxTarget }
+ 		hx-trigger="click"
+ 		hx-swap="outerhtml transition:false"
+ 		if method == "get" {
+			hx-get={ hxUrl }
+		}
+ 		if method == "post" {
+			hx-post={ hxUrl }
+		}
+	>{ label }</button>
+}
+
+templ twButton(label string) {
+	<button
+ 		class="w-full px-4 py-6 rounded-md font-semibold backdrop-filter backdrop-blur-lg backdrop-saturate-[180%] bg-[rgba(19,_48,_97,_0.75)] rounded-[12px] border-[1px] border-[solid] border-[rgba(255,255,255,0.125)] text-gray-300 hover:bg-gray-800 hover:text-white"
+ 		type="button"
+ 		hx-get="/counter"
+ 		hx-target="this"
+	>{ label }</button>
+}
+
+templ ButtonGlass(text string) {
+	<button
+ 		type="button"
+ 		hx-get="/greet"
+ 		class="w-full px-4 py-4 rounded-md font-semibold text-sm bg-transparent text-gray-300 hover:bg-gray-800 hover:text-white"
+	>
+		{ text }
+	</button>
+}
+
+templ TextInput(name string, placeholder string, method string,endpoint string,hxTrigger string) {
+	<input
+ 		type="text"
+ 		name={ name }
+ 		placeholder={ placeholder }
+ 		hx-target="#result"
+ 		if method == "get" {
+			hx-get={ endpoint }
+		}
+ 		if method == "post" {
+			hx-post={ endpoint }
+		}
+ 		hx-trigger={ hxTrigger }
+ 		class={ "input join-item input-bordered input-primary w-full max-w-xs px-4 py-3 my-8" }
+	/>
+}
+
+templ VersionComponent(Version string, UpdateText string) {
+	<div class="stats shadow mt-auto">
+		<div class="stat">
+			<div class="stat-title">Current App Version</div>
+			<div class="stat-value">{ Version }</div>
+			<div class="stat-desc">{ UpdateText }</div>
+		</div>
+	</div>
+}
+
+templ VersionComponent2(title string, content string) {
+	<div class="bg-gray-300 max-w-sm mx-auto rounded-md bg-clip-padding backdrop-filter backdrop-blur-lg bg-opacity-10 border border-gray-800">
+		<div class="relative px-4 py-5 sm:p-6">
+			<h2 class="text-lg font-semibold text-gray-900 mb-2">Card Title</h2>
+			<p class="text-base text-white-800">Card content goes here.</p>
+		</div>
+	</div>
+}
+
+templ VersionComponent3(title string, content string) {
+	<div class="relative max-w-sm mx-auto rounded-lg shadow-md overflow-hidden">
+		<div class="absolute inset-0 bg-gray-600 bg-opacity-50 backdrop-filter backdrop-blur-lg"></div>
+		<div class="relative px-4 py-5 sm:p-6">
+			<h2 class="text-lg font-semibold text-gray-400 mb-2">{ title }</h2>
+			<p class="text-base text-white-100">{ content }</p>
+		</div>
+	</div>
+}
+
+templ GreetForm(endpoint string) {
+	<div class="result" id="result">Please enter your name below 👇</div>
+	@TextInput("name","Enter Name","post",endpoint,"keyup changed delay:100ms")
+}
+
+func Greet(w http.ResponseWriter, r *http.Request) {
+	if r.FormValue("name") != "" {
+		w.Write([]byte("Hello " + r.FormValue("name") + ", It's show time!"))
+		return
+	}
+	w.Write([]byte("Please enter your name below 👇"))
+}
+
+templ Pages(Pages []struct{Path string;Label string}, appVersion struct{Version string;Text string}) {
+	for _, i := range Pages {
+		<li hx-boost hx-get={ i.Path } hx-target="#target-form" hx-swap="innerHTML transition:true">
+			<a
+ 				class="font-medium text-2xl"
+			>{ i.Label }</a>
+		</li>
+	}
+	@VersionComponent(appVersion.Version,appVersion.Text)
+}
+
+templ TestPage(target string, hxswap string) {
+	<h1>Test page for components</h1>
+	@Button("","/modal",target,hxswap,"post","Preview Modal")
+}
+
+templ Modal(title string, data string ) {
+	<dialog id="modal" class="modal modal-bottom" open>
+		<div class="modal-box">
+			<h3 class="font-bold text-lg">{ title }</h3>
+			<p class="py-4">{ data }</p>
+		</div>
+		<form method="dialog" class="modal-backdrop">
+			<button>close</button>
+		</form>
+	</dialog>
+}
+
+templ Counter(count string) {
+	@twButton("count is " + count)
+}
+
+templ Index() {
+	<div class="block">
+		<a
+ 			href="https://wails.io"
+ 			class="inline font-medium text-[#646cff] [text-decoration:inherit] hover:text-[#535bf2]"
+ 			target="_blank"
+		>
+			<img
+ 				src="/wails.png"
+ 				class="logo inline h-[6em] p-[0.5em] hover:[filter:drop-shadow(0_0_2em_#646cffaa)]"
+ 				alt="Wails logo"
+			/>
+		</a>
+		<a
+ 			href="https://developer.mozilla.org/en-US/docs/Web/JavaScript"
+ 			class="inline font-medium text-[#646cff] [text-decoration:inherit] hover:text-[#535bf2]"
+ 			target="_blank"
+		>
+			<img
+ 				src="/javascript.svg"
+ 				class="logo vanilla inline h-[6em] p-[0.5em] hover:[filter:drop-shadow(0_0_2em_#646cffaa)] hover:[filter:drop-shadow(0_0_2em_#f7df1eaa)]"
+ 				alt="JavaScript logo"
+			/>
+		</a>
+		<h1 class="mt-10 mb-10 text-[3.2em] leading-[1.1] font-semibold block font-bold">
+			Hello Wails!
+		</h1>
+		<div class="card p-[2em]">
+			<div class="flex justify-around items-center">
+				<label>JS Button</label>
+				<label>HTMX Button</label>
+			</div>
+			<div class="flex justify-around items-center">
+				<button
+ 					class="rounded-[8px] border-[1px] border-[solid] border-[transparent] px-[1.2em] py-[0.6em] text-[1em] font-medium [font-family:inherit] bg-[#1a1a1a] cursor-pointer [transition:border-color_0.25s] hover:border-[#646cff] outline-[4px_auto_-webkit-focus-ring-color]"
+ 					id="counter"
+ 					type="button"
+				>count is 0</button>
+				<button
+ 					class="rounded-[8px] border-[1px] border-[solid] border-[transparent] px-[1.2em] py-[0.6em] text-[1em] font-medium [font-family:inherit] bg-[#1a1a1a] cursor-pointer [transition:border-color_0.25s] hover:border-[#646cff] outline-[4px_auto_-webkit-focus-ring-color]"
+ 					type="button"
+ 					hx-get="/counter"
+ 					hx-target="this"
+				>count is 0</button>
+			</div>
+		</div>
+		<p class="read-the-docs text-[#888]">
+			Click on the Wails logo to learn more
+		</p>
+	</div>
+	<script>
+  let count = 0;
+  const Button = document.getElementById("counter");
+  Button.addEventListener("click", () => {
+    count++;
+    Button.innerHTML = `count is ${count}`;
+  });
+</script>
+}
+
+templ Systray() {
+	<html
+ 		class="font-[Inter,_Avenir,_Helvetica,_Arial,_sans-serif] text-[16px] leading-[24px] font-normal [color-scheme:light_dark] text-[rgba(255,_255,_255,_0.87)] bg-[#242424] antialiased"
+ 		lang="en"
+	>
+		<head>
+			<meta charset="UTF-8"/>
+			<link rel="icon" type="image/svg+xml" href="/wails.png"/>
+			<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+			<script src="https://unpkg.com/htmx.org"></script>
+			<link rel="stylesheet" href="/dist/index.css"/>
+			<title>Wails</title>
+		</head>
+		<body class="m-0 flex place-items-center min-w-[320px] min-h-screen">
+			<div class="max-w-screen-xl mx-[auto] my-[0] p-8 text-center" id="app">
+				@SideBar()
+			</div>
+		</body>
+	</html>
+}
+
+templ SideBar() {
+	<div class="fixed top-0 left-0 z-50 bg-transparent w-full h-full bg-[#111129] bg-[radial-gradient(at_47%_33%,_hsl(162.00,_77%,_40%)_0,_transparent_59%),_radial-gradient(at_82%_65%,_hsl(217.63,_57.99999999999999%,_41%)_0,_transparent_55%)]">
+		<div class="absolute top-0 left-0 w-full h-full bg-black/20 backdrop-blur-md">
+			<div
+ 				class="fixed left-0 top-0 h-full w-12 z-50 overflow-hidden bg-transparent backdrop-blur-md hover:w-40 transition-all duration-200"
+			>
+				<ul
+ 					class="flex flex flex-col flex-wrap content-start items-center space-y-4 pt-8"
+				>
+					<div
+ 						class="fixed left-0 top-0 h-full w-12 z-50 overflow-hidden bg-transparent backdrop-blur-md hover:w-36 transition-all duration-200"
+					>
+						<ul class="flex flex-col items-start justify-start space-y-4 pt-8">
+							@SystrayIcon("/bell.svg","Notifications")
+							@SystrayIcon("/updates.svg","Updates")
+							@SystrayIcon("/settings.svg","Settings")
+						</ul>
+					</div>
+				</ul>
+			</div>
+			// Content
+			<div class="relative mx-auto my-auto px-4 py-3 rounded-lg text-white sm:w-48 overflow-auto h-full"></div>
+		</div>
+	</div>
+}
+
+templ Notification(Text string) {
+	<li class="p-4 backdrop-filter backdrop-blur-[7px] backdrop-saturate-[180%] bg-[rgba(48,_48,_61,_0.75)] rounded-[12px] border-[1px] border-[solid] border-[rgba(255,255,255,0.125)]">
+		<div class="inline-block px-2 py-1 text-base rounded-lg shadow-sm">
+			{ Text }
+		</div>
+	</li>
+}
+
+templ Card(Text string) {
+	<div class="overflow-auto card w-96 bg-base-100 shadow-xl p-4 backdrop-filter backdrop-blur-[7px] backdrop-saturate-[180%] bg-[rgba(48,_48,_61,_0.75)] rounded-[12px] border-[1px] border-[solid] border-[rgba(255,255,255,0.125)]">
+		<div class="card-body">
+			<div class="hidden hover:contents card-actions justify-end">
+				<button class="btn btn-square btn-sm">
+					<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+				</button>
+			</div>
+			<p>{ Text }</p>
+		</div>
+	</div>
+}
+
+templ SideBar2() {
+	<div class="bg-blur-lg bg-opacity-40 rounded-lg shadow-xl overflow-hidden">
+		<ul class="space-y-4 mx-auto">
+			@Notification("Software update available")
+			@Notification("Pipeline completed: Click for further details")
+			@Card("Pipeline completed: Click for further details, longer text sample to see how longer text would work and whehter it would wrap.")
+			@Notification("Software update available")
+			@Card("Software update available")
+		</ul>
+		<nav class="fixed bottom-0 left-0 w-full bg-base-100 text-base-content">
+			<div class="container mx-auto px-4 py-2 flex items-center justify-center space-x-4">
+				<button class="btn">Notifications</button>
+				<button class="btn">Settings</button>
+			</div>
+			<div class="container mx-auto px-4 py-2 flex items-center justify-center space-x-4">
+				<button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-l">Button 1</button>
+				<button class="bg-gray-300 hover:bg-gray-400 text-gray-700 font-bold py-2 px-4 rounded-r">Button 2</button>
+			</div>
+		</nav>
+	</div>
+}
+
+templ SystrayIcon(SVG string,Text string) {
+	<li class="hover:group">
+		<button class="flex items-center space-x-2">
+			<img
+ 				src={ SVG }
+ 				alt="icon"
+ 				class="w-10 h-10 text-xl group-hover:text-3xl transition-all duration-200 hover:scale-110"
+			/>
+			<span class="text-lg transition-all duration-200">{ Text }</span>
+		</button>
+	</li>
+}
+
+templ Events() {
+	// button and also some divs to show content 
+	// <div hx-sse="connect:/event">
+	// 	<div hx-sse="swap:eventName1">
+	// 		...
+	// 	</div>
+	// 	<div hx-sse="swap:eventName2">
+	// 		...
+	// 	</div>
+	// </div>
+	@Button("","/event","#modal","innerHTML","get","Trigger Event")
+}
