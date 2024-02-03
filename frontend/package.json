@@ -4,10 +4,10 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build --minify false --mode development",
-    "build:prod": "vite build --mode production",
-    "preview": "vite preview"
+    "dev": "bun run --bun vite",
+    "build": "bun run --bun vite build --minify false --mode development",
+    "build:prod": "bun run --bun vite build --mode production",
+    "preview": "bun run --bun vite preview"
   },
   "devDependencies": {
     "vite": "^5.0.0",

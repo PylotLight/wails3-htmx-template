@@ -1,0 +1,7 @@
+wails.syso
+frontend/dist/
+frontend/node_modules/
+frontend/bindings/
+bin/*
+.task
+bun.lockb
