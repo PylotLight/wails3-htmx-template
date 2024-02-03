@@ -10,7 +10,9 @@
     "preview": "bun run --bun vite preview"
   },
   "devDependencies": {
-    "vite": "^5.0.0",
-    "@wailsio/runtime": "latest"
+    "@wailsio/runtime": "latest",
+    "daisyui": "^4.6.1",
+    "tailwindcss": "^3.4.1",
+    "vite": "^5.0.0"
   }
 }

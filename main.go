@@ -77,3 +77,94 @@ func main() {
 		log.Fatal(err)
 	}
 }
+
+// func NewChiRouter() *chi.Mux {
+// 	r := chi.NewRouter()
+// 	r.Use(middleware.Logger)
+// 	r.Use(middleware.Recoverer)
+
+// 	c := &Counter{}
+
+// 	// r.Get("/initial", templ.Handler(components.Pages([]struct {
+// 	// 	Path  string
+// 	// 	Label string
+// 	// }{
+// 	// 	{"/greet", "Greet form"},
+// 	// 	{"/events", "Events page"},
+// 	// }, struct {
+// 	// 	Version string
+// 	// 	Text    string
+// 	// }{
+// 	// 	version, "No update available",
+// 	// })).ServeHTTP)
+// 	r.Get("/init", InitContent())
+// 	r.Get("/greet", templ.Handler(components.GreetForm("/greet")).ServeHTTP)
+// 	r.Post("/greet", components.Greet)
+// 	r.Get("/modal", templ.Handler(components.TestPage("#modal", "outerHTML")).ServeHTTP)
+// 	r.Post("/modal", templ.Handler(components.Modal("Title for the modal", "Sample Data")).ServeHTTP)
+// 	// r.Get("/systray", InitContent())
+// 	// r.Get("/sidebar", templ.Handler(components.SideBar()).ServeHTTP)
+// 	r.Get("/counter", CounterHandler(c))
+// 	r.Get("/events", templ.Handler(components.Events()).ServeHTTP)
+// 	// Custom Endpoints
+// 	r.Get("/event", TestLoop)
+// 	return r
+// }
+
+/* TODO
+1. Add systray
+2. Add user settings
+3. Add notifications
+4. Add realtime updates
+5. Add multiwindow
+6. Add mouse bound window for context interaction/frameless/global keybindings
+7. Add daisyui/other
+8. Add DB + local storage (bbolt/pocketbase)
+9. Add dialog
+10. Add Auth
+11. Embedded files + audio notification
+
+
+UX Idea:
+So while keeping the default wails template view, we can add a hover menu that opens an overlay grid with the options for different views,
+that then uses htmx + astro to render the different views.
+
+Systray usage:
+New idea 2:
+Use bottom nav menu in systray to default to notfications view but change to settings/updates. Use events and wml to navigate from notifications to main window.
+
+New idea:
+Change notifications to be purely for notifications, with settings and updates done in the main window via bottom/top/sidebar.
+Old:
+ - User/System settings0
+ - Notifications
+ - Realtime updates (time, background tasks)
+
+Systray could be used for notifcations/modals, a links or options for navigation, or just a demo for opening alternate windows
+settings/notifications/realtime updates for status information/widgets and action shortcuts, background tasks&activites
+
+###Stuck###
+- stuck on how to manage route for different windows i.e systray for loading the relevant components/html/css for each window - fixed
+
+
+- Add support for htmx
+no js - done (except for the 1 small demo)
+add greet demo -
+chi - done?
+tailwind - done
+daisyui
+systray - added, but will be a view controller or something?
+multiwindow - what for?
+astro - done
+
+add embedded files demo/user config/embedded binary - store in webview storage
+streaming? sse/websockets/chunked/events?
+notifications?
+db
+
+1. go to events page which loads the page
+2. button to activate the call to events
+3. return instant result then loop to send an event with updates.
+
+
+*/
