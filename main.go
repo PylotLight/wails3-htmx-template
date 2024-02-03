@@ -93,8 +93,7 @@ func main() {
 				systemTray.OpenMenu()
 			},
 		},
-		URL: "/systray",
-		CSS: `body { background-color: rgba(255, 255, 255, 0); } .main { color: white; margin: 20%; }`,
+		URL: "/",
 	})
 
 	app.NewWebviewWindowWithOptions(application.WebviewWindowOptions{

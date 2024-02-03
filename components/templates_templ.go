@@ -589,7 +589,11 @@ func Counter(count string) templ.Component {
 	})
 }
 
+<<<<<<< HEAD
 func Index() templ.Component {
+=======
+func Systray() templ.Component {
+>>>>>>> a0c6c835ed1f58f75ec5190283726ba800e37a84
 	return templ.ComponentFunc(func(ctx context.Context, templ_7745c5c3_W io.Writer) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templ_7745c5c3_W.(*bytes.Buffer)
 		if !templ_7745c5c3_IsBuffer {
@@ -602,6 +606,7 @@ func Index() templ.Component {
 			templ_7745c5c3_Var30 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
+<<<<<<< HEAD
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"block\"><a href=\"https://wails.io\" class=\"inline font-medium text-[#646cff] [text-decoration:inherit] hover:text-[#535bf2]\" target=\"_blank\"><img src=\"/wails.png\" class=\"logo inline h-[6em] p-[0.5em] hover:[filter:drop-shadow(0_0_2em_#646cffaa)]\" alt=\"Wails logo\"></a> <a href=\"https://developer.mozilla.org/en-US/docs/Web/JavaScript\" class=\"inline font-medium text-[#646cff] [text-decoration:inherit] hover:text-[#535bf2]\" target=\"_blank\"><img src=\"/javascript.svg\" class=\"logo vanilla inline h-[6em] p-[0.5em] hover:[filter:drop-shadow(0_0_2em_#646cffaa)] hover:[filter:drop-shadow(0_0_2em_#f7df1eaa)]\" alt=\"JavaScript logo\"></a><h1 class=\"mt-10 mb-10 text-[3.2em] leading-[1.1] font-semibold block font-bold\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
@@ -696,10 +701,13 @@ func Systray() templ.Component {
 			templ_7745c5c3_Var38 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
+=======
+>>>>>>> a0c6c835ed1f58f75ec5190283726ba800e37a84
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<html class=\"font-[Inter,_Avenir,_Helvetica,_Arial,_sans-serif] text-[16px] leading-[24px] font-normal [color-scheme:light_dark] text-[rgba(255,_255,_255,_0.87)] bg-[#242424] antialiased\" lang=\"en\"><head><meta charset=\"UTF-8\"><link rel=\"icon\" type=\"image/svg+xml\" href=\"/wails.png\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"><script src=\"https://unpkg.com/htmx.org\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
+<<<<<<< HEAD
 		templ_7745c5c3_Var39 := ``
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var39)
 		if templ_7745c5c3_Err != nil {
@@ -711,6 +719,19 @@ func Systray() templ.Component {
 		}
 		templ_7745c5c3_Var40 := `Wails`
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var40)
+=======
+		templ_7745c5c3_Var31 := ``
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var31)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</script><link rel=\"stylesheet\" href=\"src/index.css\"><title>")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Var32 := `Wails`
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var32)
+>>>>>>> a0c6c835ed1f58f75ec5190283726ba800e37a84
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -741,9 +762,15 @@ func SideBar() templ.Component {
 			defer templ.ReleaseBuffer(templ_7745c5c3_Buffer)
 		}
 		ctx = templ.InitializeContext(ctx)
+<<<<<<< HEAD
 		templ_7745c5c3_Var41 := templ.GetChildren(ctx)
 		if templ_7745c5c3_Var41 == nil {
 			templ_7745c5c3_Var41 = templ.NopComponent
+=======
+		templ_7745c5c3_Var33 := templ.GetChildren(ctx)
+		if templ_7745c5c3_Var33 == nil {
+			templ_7745c5c3_Var33 = templ.NopComponent
+>>>>>>> a0c6c835ed1f58f75ec5190283726ba800e37a84
 		}
 		ctx = templ.ClearChildren(ctx)
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"fixed top-0 left-0 z-50 bg-transparent w-full h-full bg-[#111129] bg-[radial-gradient(at_47%_33%,_hsl(162.00,_77%,_40%)_0,_transparent_59%),_radial-gradient(at_82%_65%,_hsl(217.63,_57.99999999999999%,_41%)_0,_transparent_55%)]\"><div class=\"absolute top-0 left-0 w-full h-full bg-black/20 backdrop-blur-md\"><div class=\"fixed left-0 top-0 h-full w-12 z-50 overflow-hidden bg-transparent backdrop-blur-md hover:w-40 transition-all duration-200\"><ul class=\"flex flex flex-col flex-wrap content-start items-center space-y-4 pt-8\"><div class=\"fixed left-0 top-0 h-full w-12 z-50 overflow-hidden bg-transparent backdrop-blur-md hover:w-36 transition-all duration-200\"><ul class=\"flex flex-col items-start justify-start space-y-4 pt-8\">")
@@ -773,6 +800,7 @@ func SideBar() templ.Component {
 	})
 }
 
+<<<<<<< HEAD
 func Notification(Text string) templ.Component {
 	return templ.ComponentFunc(func(ctx context.Context, templ_7745c5c3_W io.Writer) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templ_7745c5c3_W.(*bytes.Buffer)
@@ -923,6 +951,8 @@ func SideBar2() templ.Component {
 	})
 }
 
+=======
+>>>>>>> a0c6c835ed1f58f75ec5190283726ba800e37a84
 func SystrayIcon(SVG string, Text string) templ.Component {
 	return templ.ComponentFunc(func(ctx context.Context, templ_7745c5c3_W io.Writer) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templ_7745c5c3_W.(*bytes.Buffer)
@@ -931,9 +961,15 @@ func SystrayIcon(SVG string, Text string) templ.Component {
 			defer templ.ReleaseBuffer(templ_7745c5c3_Buffer)
 		}
 		ctx = templ.InitializeContext(ctx)
+<<<<<<< HEAD
 		templ_7745c5c3_Var51 := templ.GetChildren(ctx)
 		if templ_7745c5c3_Var51 == nil {
 			templ_7745c5c3_Var51 = templ.NopComponent
+=======
+		templ_7745c5c3_Var34 := templ.GetChildren(ctx)
+		if templ_7745c5c3_Var34 == nil {
+			templ_7745c5c3_Var34 = templ.NopComponent
+>>>>>>> a0c6c835ed1f58f75ec5190283726ba800e37a84
 		}
 		ctx = templ.ClearChildren(ctx)
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<li class=\"hover:group\"><button class=\"flex items-center space-x-2\"><img src=\"")
@@ -948,8 +984,13 @@ func SystrayIcon(SVG string, Text string) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
+<<<<<<< HEAD
 		var templ_7745c5c3_Var52 string = Text
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var52))
+=======
+		var templ_7745c5c3_Var35 string = Text
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var35))
+>>>>>>> a0c6c835ed1f58f75ec5190283726ba800e37a84
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -972,9 +1013,15 @@ func Events() templ.Component {
 			defer templ.ReleaseBuffer(templ_7745c5c3_Buffer)
 		}
 		ctx = templ.InitializeContext(ctx)
+<<<<<<< HEAD
 		templ_7745c5c3_Var53 := templ.GetChildren(ctx)
 		if templ_7745c5c3_Var53 == nil {
 			templ_7745c5c3_Var53 = templ.NopComponent
+=======
+		templ_7745c5c3_Var36 := templ.GetChildren(ctx)
+		if templ_7745c5c3_Var36 == nil {
+			templ_7745c5c3_Var36 = templ.NopComponent
+>>>>>>> a0c6c835ed1f58f75ec5190283726ba800e37a84
 		}
 		ctx = templ.ClearChildren(ctx)
 		templ_7745c5c3_Err = Button("", "/event", "#modal", "innerHTML", "get", "Trigger Event").Render(ctx, templ_7745c5c3_Buffer)

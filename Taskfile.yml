@@ -35,7 +35,11 @@ tasks:
     cmds:
       - go build {{.BUILD_FLAGS}} -o {{.BIN_DIR}}/wails3-htmx-template.exe
     vars:
+<<<<<<< HEAD
       BUILD_FLAGS: '{{if eq .PRODUCTION "true"}}-tags production -ldflags="-w -s -H windowsgui"{{else}}-gcflags=all="-N -l"{{end}} -buildvcs=false'
+=======
+      BUILD_FLAGS: '{{if eq .PRODUCTION "true"}}-tags production -ldflags="-w -s -H windowsgui"{{else}}-gcflags=all="-N -l"{{end}}'
+>>>>>>> a0c6c835ed1f58f75ec5190283726ba800e37a84
     env:
       GOOS: windows
       CGO_ENABLED: 0
@@ -377,6 +381,7 @@ tasks:
       - dist/*
     deps:
       - install:frontend:deps
+<<<<<<< HEAD
       - generate:bindings
     cmds:
       - bun run build
@@ -388,6 +393,11 @@ tasks:
     generates:
       - "frontend/bindings/**/*"
 
+=======
+    cmds:
+      - bun run build
+
+>>>>>>> a0c6c835ed1f58f75ec5190283726ba800e37a84
   go:mod:tidy:
     summary: Runs `go mod tidy`
     internal: true
@@ -421,6 +431,7 @@ tasks:
     log_options:
       verbose: true
 
+<<<<<<< HEAD
 
   dev:
     summary: Runs the application in development mode
@@ -430,6 +441,25 @@ tasks:
       - wails3 tool watcher -config ./build/devmode.config.toml
     vars:
       FRONTEND_DEVSERVER_URL: 'http://localhost:5173'
+=======
+  dev:
+    summary: Runs the application in development mode
+    preconditions:
+      - sh: wails3 tool checkport -u "$FRONTEND_DEVSERVER_URL"
+        msg: 'Cannot connect to frontend dev server ($FRONTEND_DEVSERVER_URL). Please ensure you have run `wails3 dev:frontend` in another terminal.'
+    cmds:
+      - wails3 tool watcher -path {{.PATH}} -preexec "{{.PREEXEC}}" {{.PREWAIT}} -postexec "{{.POSTEXEC}}" -ignorefiles {{.IGNOREFILES}} -ignoredirs {{.IGNOREDIRS}} -ignoreextensions {{.IGNOREEXTENSIONS}} -exec "{{.EXEC}}" -debounce {{.DEBOUNCE}}
+    vars:
+      PATH: '.'
+      PREEXEC: 'wails3 task build'
+      PREWAIT: '-prewait true'
+      EXEC: 'wails3 task run'
+      POSTEXEC: ''
+      IGNOREFILES: 'Taskfile.yml'
+      IGNOREDIRS: '.git,.idea,.vscode,bin'
+      IGNOREEXTENSIONS: '.exe,.syso'
+      DEBOUNCE: 1000
+>>>>>>> a0c6c835ed1f58f75ec5190283726ba800e37a84
     env:
       # This is the default vite dev server port
       FRONTEND_DEVSERVER_URL: 'http://localhost:5173'

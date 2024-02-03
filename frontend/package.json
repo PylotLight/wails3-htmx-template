@@ -12,7 +12,11 @@
   "private": true,
   "scripts": {
     "dev": "bunx --bun vite",
+<<<<<<< HEAD
     "build": "bunx --bun vite build --minify false --mode development",
+=======
+    "build": "bunx --bun vite build",
+>>>>>>> a0c6c835ed1f58f75ec5190283726ba800e37a84
     "preview": "bunx --bun vite preview"
   },
   "type": "module"
