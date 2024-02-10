@@ -2,12 +2,14 @@ package main
 
 import (
 	"embed"
+	"fmt"
 	"log"
 	"net/http"
 	"time"
 
 	"wails3-htmx-template/components"
 	"wails3-htmx-template/handler"
+	types "wails3-htmx-template/internal"
 
 	"github.com/a-h/templ"
 	"github.com/wailsapp/wails/v3/pkg/application"
@@ -20,6 +22,12 @@ import (
 
 //go:embed all:frontend/dist
 var assets embed.FS
+
+func init() {
+	// Initialize the channel and start the notification loop
+	types.Notifications.NotificationChannel = make(chan []types.Notification)
+	go notificationLoop()
+}
 
 // main function serves as the application's entry point. It initializes the application, creates a window,
 // and starts a goroutine that emits a time-based event every second. It subsequently runs the application and
@@ -114,73 +122,47 @@ func main() {
 func NewMuxRouter() *http.ServeMux {
 	m := http.NewServeMux()
 
-	c := &handler.Counter{}
+	c := &types.Counter{}
+
+	go func() {
+		for {
+			n := <-types.Notifications.NotificationChannel
+			types.Notifications.NotificationsMutex.Lock()
+			types.Notifications.ActiveNotifications = append(types.Notifications.ActiveNotifications, n...)
+			types.Notifications.NotificationsMutex.Unlock()
+			time.Sleep(1 * time.Second)
+		}
+	}()
 
 	m.HandleFunc("/init", handler.InitContent())
 	m.HandleFunc("/greet", components.Greet)
 	m.HandleFunc("/counter", handler.CounterHandler(c))
 	m.HandleFunc("/systray/{button}", func(w http.ResponseWriter, r *http.Request) {
 		button := r.PathValue("button")
-		activeStates := map[string]string{
-			"notifications": "active", // Set initial values here
-			"settings":      "",
-		}
+		activeStates := types.Systray{}
 		switch button {
 		case "notifications":
-			activeStates["notifications"] = "active"
-			activeStates["settings"] = ""
+			activeStates.Notifications = "active"
+			activeStates.Settings = ""
 		case "settings":
-			activeStates["notifications"] = ""
-			activeStates["settings"] = "active"
+			activeStates.Notifications = ""
+			activeStates.Settings = "active"
 		}
-		templ.Handler(components.Systray(activeStates, handler.GetNotifications())).ServeHTTP(w, r)
-		// fmt.Fprintf(w, "Item ID = %s", id)
+		templ.Handler(components.Systray(activeStates, types.Notifications.GetNotifications())).ServeHTTP(w, r)
 	})
 
+	m.HandleFunc("/notifications", templ.Handler(components.SystrayContent(types.Notifications.GetNotifications())).ServeHTTP)
 	return m
 }
 
-// func SystrayHandler() (w http.ResponseWriter, r *http.Request) {
-
-// 	// return mux.HandleFunc("/items/{id}", func(w http.ResponseWriter, r *http.Request) {
-// 	// 	id := r.PathValue("id")
-// 	// 	fmt.Fprintf(w, "Item ID = %s", id)
-// 	// })
-// 	return templ.Handler(Systray("", "active")).ServeHTTP()
-// }
-
-// func NewChiRouter() *chi.Mux {
-// 	r := chi.NewRouter()
-// 	r.Use(middleware.Logger)
-// 	r.Use(middleware.Recoverer)
-
-// 	c := &Counter{}
-
-// 	// r.Get("/initial", templ.Handler(components.Pages([]struct {
-// 	// 	Path  string
-// 	// 	Label string
-// 	// }{
-// 	// 	{"/greet", "Greet form"},
-// 	// 	{"/events", "Events page"},
-// 	// }, struct {
-// 	// 	Version string
-// 	// 	Text    string
-// 	// }{
-// 	// 	version, "No update available",
-// 	// })).ServeHTTP)
-// 	r.Get("/init", InitContent())
-// 	r.Get("/greet", templ.Handler(components.GreetForm("/greet")).ServeHTTP)
-// 	r.Post("/greet", components.Greet)
-// 	r.Get("/modal", templ.Handler(components.TestPage("#modal", "outerHTML")).ServeHTTP)
-// 	r.Post("/modal", templ.Handler(components.Modal("Title for the modal", "Sample Data")).ServeHTTP)
-// 	// r.Get("/systray", InitContent())
-// 	// r.Get("/sidebar", templ.Handler(components.SideBar()).ServeHTTP)
-// 	r.Get("/counter", CounterHandler(c))
-// 	r.Get("/events", templ.Handler(components.Events()).ServeHTTP)
-// 	// Custom Endpoints
-// 	r.Get("/event", TestLoop)
-// 	return r
-// }
+func notificationLoop() {
+	// Loop to add new demo notifications every second
+	for {
+		types.Notifications.NotificationChannel <- []types.Notification{{Title: "Demo Notification", Content: fmt.Sprintf("This is a demo notification at %v", time.Now().Format(time.Stamp))}}
+		// Wait for a second before sending the next notification
+		time.Sleep(2 * time.Second)
+	}
+}
 
 /* TODO
 Redo Template:
@@ -221,9 +203,6 @@ Old:
 
 Systray could be used for notifcations/modals, a links or options for navigation, or just a demo for opening alternate windows
 settings/notifications/realtime updates for status information/widgets and action shortcuts, background tasks&activites
-
-###Stuck###
-- stuck on how to manage route for different windows i.e systray for loading the relevant components/html/css for each window - fixed
 
 
 - Add support for htmx
