@@ -5,11 +5,4 @@ module.exports = {
         extend: {},
     },
     plugins: [require("daisyui")],
-    // output: {
-    //     // ... other options
-    //     css: {
-    //         // Add `systray` to the `filename` or `path` property
-    //         path: '[dir]/[name].css', // Or `path: '[dir]/[name].css'`
-    //     },
-    // }
 }

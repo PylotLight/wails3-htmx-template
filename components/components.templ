@@ -1,4 +1,4 @@
-package main
+package components
 
 import "net/http"
 
@@ -10,6 +10,29 @@ templ Button(label string, endpoint string, hxTarget string) {
 
 templ TextInput(name string, label string, endpoint string, hxTarget string, hxTrigger string) {
 	<input type="text" name={ name } placeholder={ label } hx-get={ endpoint } hx-target={ hxTarget } class="input input-ghost w-full max-w-xs" hx-trigger={ hxTrigger } autocomplete="off"/>
+}
+
+templ NotificationItem(AlertTitle string, AlertContent string) {
+	// <li class="py-2">
+	// 	<div tabindex="0" class="collapse bg-base-200">
+	// 		<div class="collapse-title text-xl font-medium">
+	// 			{ AlertTitle }
+	// 		</div>
+	// 		<div class="collapse-content">
+	// 			<p>{ AlertContent }</p>
+	// 		</div>
+	// 	</div>
+	// </li>
+	<li class="py-2">
+		<div tabindex="0" class="collapse bg-base-200 p-4 rounded-lg bg-gray-200 rounded-md bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-20 border border-gray-100 hover:bg-opacity-10">
+			<div class="collapse-title text-xl font-medium">
+				{ AlertTitle }
+			</div>
+			<div class="collapse-content">
+				<p>{ AlertContent } </p>
+			</div>
+		</div>
+	</li>
 }
 
 // Forms
@@ -28,6 +51,34 @@ func Greet(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	w.Write([]byte("Please enter your name below 👇"))
+}
+
+templ Systray(active map[string]string, Notifications []map[string]string) {
+	// just the body loaded into systray. daisyui nav with content loaded in above.
+	// 
+	<ol class="space-4">
+		for _, item := range Notifications {
+			@NotificationItem(item["Title"], item["Content"])
+		}
+	</ol>
+	@TrayNavBar(active)
+}
+
+templ TrayNavBar(active map[string]string) {
+	<div class="btm-nav">
+		<button class={ active["notifications"] } hx-get="/systray/notifications">
+			<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+			<span class="btm-nav-label">Notifications</span>
+		</button>
+		<button class={ active["settings"] } hx-get="/systray/settings">
+			<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+			<span class="btm-nav-label">Settings</span>
+		</button>
+		//   <button>
+		//     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" /></svg>
+		//     <span class="btm-nav-label">Updates</span>
+		//   </button>
+	</div>
 }
 
 templ Index() {
@@ -146,25 +197,4 @@ templ Index_Old() {
     Button.innerHTML = `count is ${count}`;
   });
 </script>
-}
-
-templ Systray() {
-	<html
-		class="font-[Inter,_Avenir,_Helvetica,_Arial,_sans-serif] text-[16px] leading-[24px] font-normal [color-scheme:light_dark] text-[rgba(255,_255,_255,_0.87)] bg-[#242424] antialiased"
-		lang="en"
-	>
-		<head>
-			<meta charset="UTF-8"/>
-			<link rel="icon" type="image/svg+xml" href="/wails.png"/>
-			<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-			<script src="https://unpkg.com/htmx.org"></script>
-			<link rel="stylesheet" href="/dist/index.css"/>
-			<title>Wails</title>
-		</head>
-		<body class="m-0 flex place-items-center min-w-[320px] min-h-screen">
-			<div class="max-w-screen-xl mx-[auto] my-[0] p-8 text-center" id="app">
-				Data
-			</div>
-		</body>
-	</html>
 }

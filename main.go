@@ -1,13 +1,15 @@
 package main
 
 import (
-	"context"
 	"embed"
 	"log"
 	"net/http"
-	"strconv"
 	"time"
 
+	"wails3-htmx-template/components"
+	"wails3-htmx-template/handler"
+
+	"github.com/a-h/templ"
 	"github.com/wailsapp/wails/v3/pkg/application"
 )
 
@@ -110,45 +112,42 @@ func main() {
 }
 
 func NewMuxRouter() *http.ServeMux {
-	mux := http.NewServeMux()
+	m := http.NewServeMux()
 
-	c := &Counter{}
+	c := &handler.Counter{}
 
-	mux.HandleFunc("/init", InitContent())
-	mux.HandleFunc("/greet", Greet)
-	mux.HandleFunc("/counter", CounterHandler(c))
-
-	return mux
-}
-
-func InitContent() http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
-		ctx := context.Background()
-		windowID := r.Header.Get("X-Wails-Window-Id")
-		app := application.Get()
-		app.Events.Emit(&application.WailsEvent{
-			Name: "myevent",
-			Data: "now",
-		})
-		if windowID == "1" {
-			Index().Render(ctx, w)
+	m.HandleFunc("/init", handler.InitContent())
+	m.HandleFunc("/greet", components.Greet)
+	m.HandleFunc("/counter", handler.CounterHandler(c))
+	m.HandleFunc("/systray/{button}", func(w http.ResponseWriter, r *http.Request) {
+		button := r.PathValue("button")
+		activeStates := map[string]string{
+			"notifications": "active", // Set initial values here
+			"settings":      "",
 		}
-		if windowID == "2" {
-			Index().Render(ctx, w)
+		switch button {
+		case "notifications":
+			activeStates["notifications"] = "active"
+			activeStates["settings"] = ""
+		case "settings":
+			activeStates["notifications"] = ""
+			activeStates["settings"] = "active"
 		}
-	}
+		templ.Handler(components.Systray(activeStates, handler.GetNotifications())).ServeHTTP(w, r)
+		// fmt.Fprintf(w, "Item ID = %s", id)
+	})
+
+	return m
 }
 
-type Counter struct {
-	count int
-}
+// func SystrayHandler() (w http.ResponseWriter, r *http.Request) {
 
-func CounterHandler(c *Counter) http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
-		c.count++
-		w.Write([]byte("count is " + strconv.Itoa(c.count)))
-	}
-}
+// 	// return mux.HandleFunc("/items/{id}", func(w http.ResponseWriter, r *http.Request) {
+// 	// 	id := r.PathValue("id")
+// 	// 	fmt.Fprintf(w, "Item ID = %s", id)
+// 	// })
+// 	return templ.Handler(Systray("", "active")).ServeHTTP()
+// }
 
 // func NewChiRouter() *chi.Mux {
 // 	r := chi.NewRouter()
