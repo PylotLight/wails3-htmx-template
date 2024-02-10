@@ -1,8 +1,6 @@
 module wails3-htmx-template
 
-go 1.21.1
-
-toolchain go1.21.6
+go 1.22
 
 require github.com/wailsapp/wails/v3 v3.0.0-alpha.4
 
@@ -10,6 +8,7 @@ require (
 	dario.cat/mergo v1.0.0 // indirect
 	github.com/Microsoft/go-winio v0.6.1 // indirect
 	github.com/ProtonMail/go-crypto v1.0.0 // indirect
+	github.com/a-h/templ v0.2.543
 	github.com/bep/debounce v1.2.1 // indirect
 	github.com/cloudflare/circl v1.3.7 // indirect
 	github.com/cyphar/filepath-securejoin v0.2.4 // indirect

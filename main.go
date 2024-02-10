@@ -1,8 +1,11 @@
 package main
 
 import (
+	"context"
 	"embed"
 	"log"
+	"net/http"
+	"strconv"
 	"time"
 
 	"github.com/wailsapp/wails/v3/pkg/application"
@@ -26,14 +29,13 @@ func main() {
 	// 'Assets' configures the asset server with the 'FS' variable pointing to the frontend files.
 	// 'Bind' is a list of Go struct instances. The frontend has access to the methods of these instances.
 	// 'Mac' options tailor the application when running an macOS.
+
 	app := application.New(application.Options{
 		Name:        "wails3-htmx-template",
 		Description: "A demo of using raw HTML & CSS",
-		Bind: []any{
-			&GreetService{},
-		},
 		Assets: application.AssetOptions{
-			FS: assets,
+			FS:      assets,
+			Handler: NewMuxRouter(),
 		},
 		Mac: application.MacOptions{
 			ApplicationShouldTerminateAfterLastWindowClosed: true,
@@ -46,7 +48,7 @@ func main() {
 	// 'BackgroundColour' is the background colour of the window.
 	// 'URL' is the URL that will be loaded into the webview.
 	app.NewWebviewWindowWithOptions(application.WebviewWindowOptions{
-		Title: "Window 1",
+		Title: "Main Window",
 		Mac: application.MacWindow{
 			InvisibleTitleBarHeight: 50,
 			Backdrop:                application.MacBackdropTranslucent,
@@ -65,9 +67,38 @@ func main() {
 				Name: "time",
 				Data: now,
 			})
+			// println("Emitting: " + now)
 			time.Sleep(time.Second)
 		}
 	}()
+
+	// Systray
+	systemTray := app.NewSystemTray()
+
+	window := app.NewWebviewWindowWithOptions(application.WebviewWindowOptions{
+		Width:         500,
+		Height:        800,
+		Frameless:     true,
+		AlwaysOnTop:   true,
+		Hidden:        true,
+		DisableResize: true,
+		URL:           "/",
+		ShouldClose: func(window *application.WebviewWindow) bool {
+			window.Hide()
+			return false
+		},
+		Windows: application.WindowsWindow{
+			HiddenOnTaskbar: true,
+		},
+		KeyBindings: map[string]func(window *application.WebviewWindow){
+			"F12": func(window *application.WebviewWindow) {
+				systemTray.OpenMenu()
+			},
+		},
+	})
+
+	// systemTray.SetMenu(myMenu)
+	systemTray.AttachWindow(window).WindowOffset(5)
 
 	// Run the application. This blocks until the application has been exited.
 	err := app.Run()
@@ -75,6 +106,47 @@ func main() {
 	// If an error occurred while running the application, log it and exit.
 	if err != nil {
 		log.Fatal(err)
+	}
+}
+
+func NewMuxRouter() *http.ServeMux {
+	mux := http.NewServeMux()
+
+	c := &Counter{}
+
+	mux.HandleFunc("/init", InitContent())
+	mux.HandleFunc("/greet", Greet)
+	mux.HandleFunc("/counter", CounterHandler(c))
+
+	return mux
+}
+
+func InitContent() http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		ctx := context.Background()
+		windowID := r.Header.Get("X-Wails-Window-Id")
+		app := application.Get()
+		app.Events.Emit(&application.WailsEvent{
+			Name: "myevent",
+			Data: "now",
+		})
+		if windowID == "1" {
+			Index().Render(ctx, w)
+		}
+		if windowID == "2" {
+			Index().Render(ctx, w)
+		}
+	}
+}
+
+type Counter struct {
+	count int
+}
+
+func CounterHandler(c *Counter) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		c.count++
+		w.Write([]byte("count is " + strconv.Itoa(c.count)))
 	}
 }
 
@@ -112,7 +184,15 @@ func main() {
 // }
 
 /* TODO
+Redo Template:
 1. Add systray
+Need to change the template to use:
+- Remove all JS from template and replace with wml events for server updates.
+- So open main window with a clean window with htmx greet, counter and live server events options via time.
+- Systray with settings/updates and notifications with daisyui.
+
+2. Add events via runtime.
+
 2. Add user settings
 3. Add notifications
 4. Add realtime updates

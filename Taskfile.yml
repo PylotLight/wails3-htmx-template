@@ -438,4 +438,5 @@ tasks:
   dev:reload:
     summary: Reloads the application
     cmds:
+      - templ generate
       - task: run

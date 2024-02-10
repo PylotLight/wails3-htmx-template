@@ -5,39 +5,26 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/wails.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="/style.css" />
+    <link rel="stylesheet" href="index.css" />
     <script src="https://unpkg.com/htmx.org"></script>
     <title>Wails App</title>
 </head>
 
 <body>
     <div class="container">
-        <div>
-            <a wml-openURL="https://wails.io">
-                <img src="/wails.png" class="logo" alt="Wails logo" />
-            </a>
-            <a wml-openURL="https://developer.mozilla.org/en-US/docs/Web/JavaScript">
-                <img src="/javascript.svg" class="logo vanilla" alt="JavaScript logo" />
-            </a>
-        </div>
-        <h1>Wails + Javascript</h1>
-        <div class="card">
-            <div class="result" id="result">Please enter your name below 👇</div>
-            <div class="input-box" id="input">
-                <input class="input" id="name" type="text" autocomplete="off" />
-                <button class="btn" onclick="doGreet()">Greet</button>
-            </div>
-        </div>
-        <div class="footer">
-            <div>
-                <p>Click on the Wails logo to learn more</p>
-            </div>
-            <div>
-                <p id="time">Listening for Time event...</p>
-            </div>
+        <div class="max-w-screen-xl mx-[auto] my-[0] p-4 text-center" id="app" hx-get="/init" hx-trigger="load"
+            hx-target="#app">
         </div>
     </div>
-    <script type="module" src="/main.js"></script>
+    <script type="module">
+        import { Events } from "@wailsio/runtime";
+        console.log("tes1t1")
+        Events.On('time', (time) => {
+            timeElement = document.queryselector("#time")
+            console.log("test")
+            timeElement.innerText = time.data;
+        });
+    </script>
 </body>
 
 </html>
