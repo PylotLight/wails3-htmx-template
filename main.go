@@ -144,16 +144,18 @@ func NewMuxRouter() *http.ServeMux {
 		case "notifications":
 			activeStates.Notifications = "active"
 			activeStates.Settings = ""
+			templ.Handler(components.Systray(activeStates, types.Notifications.GetLatestNotificationsSinceLastPoll(), types.Settings{})).ServeHTTP(w, r)
 		case "settings":
 			activeStates.Notifications = ""
 			activeStates.Settings = "active"
+			templ.Handler(components.Systray(activeStates, nil, types.Settings{DatabaseLocation: "SamplePath", SecretToken: "****"})).ServeHTTP(w, r)
 		}
-		templ.Handler(components.Systray(activeStates, types.Notifications.GetLatestNotificationsSinceLastPoll())).ServeHTTP(w, r)
+
 	})
 
 	// m.HandleFunc("/notifications", templ.Handler(components.SystrayContent(types.Notifications.GetNotifications())).ServeHTTP)
 	m.HandleFunc("/notifications", func(w http.ResponseWriter, r *http.Request) {
-		templ.Handler(components.SystrayContent(types.Notifications.GetLatestNotificationsSinceLastPoll())).ServeHTTP(w, r)
+		templ.Handler(components.Notifications(types.Notifications.GetLatestNotificationsSinceLastPoll())).ServeHTTP(w, r)
 	})
 	return m
 }

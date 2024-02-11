@@ -54,21 +54,32 @@ func Greet(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte("Please enter your name below 👇"))
 }
 
-templ Systray(status types.Systray, notifications []types.Notification) {
+templ Systray(status types.Systray, notifications []types.Notification, settings types.Settings) {
 	// just the body loaded into systray. daisyui nav with content loaded in above.
 	//
-	<div hx-get="/notifications" hx-trigger="every 2s" hx-target="this" hx-swap="beforeend">
-		@SystrayContent(notifications)
-	</div>
+	if status.Notifications == "active" {
+		<div>
+			<ol class="space-4" hx-get="/notifications" hx-trigger="every 2s" hx-target="this" hx-swap="beforeend">
+				@Notifications(notifications)
+			</ol>
+		</div>
+	}
+	if status.Settings == "active" {
+		@Notifications(notifications)
+	}
 	@TrayNavBar(status)
 }
 
-templ SystrayContent(notifications []types.Notification) {
-	<ol class="space-4">
-		for _, item := range notifications {
-			@NotificationItem(item.Title, item.Message)
-		}
-	</ol>
+templ Notifications(notifications []types.Notification) {
+	for _, item := range notifications {
+		@NotificationItem(item.Title, item.Message)
+	}
+}
+
+templ Settings(settings []types.Settings) {
+	<div hx-get="/settings" hx-trigger="load" hx-target="this">
+		Settings
+	</div>
 }
 
 templ TrayNavBar(status types.Systray) {

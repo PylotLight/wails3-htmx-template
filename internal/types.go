@@ -11,10 +11,10 @@ type Systray struct {
 	Settings      string
 }
 
-// type Notification struct {
-// 	Title   string
-// 	Content string
-// }
+type Settings struct {
+	DatabaseLocation string
+	SecretToken      string
+}
 
 type Notification struct {
 	ID      int
