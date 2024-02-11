@@ -57,7 +57,7 @@ func Greet(w http.ResponseWriter, r *http.Request) {
 templ Systray(status types.Systray, notifications []types.Notification) {
 	// just the body loaded into systray. daisyui nav with content loaded in above.
 	//
-	<div hx-get="/notifications" hx-trigger="every 1s" hx-target="this">
+	<div hx-get="/notifications" hx-trigger="every 2s" hx-target="this" hx-swap="beforeend">
 		@SystrayContent(notifications)
 	</div>
 	@TrayNavBar(status)
@@ -66,7 +66,7 @@ templ Systray(status types.Systray, notifications []types.Notification) {
 templ SystrayContent(notifications []types.Notification) {
 	<ol class="space-4">
 		for _, item := range notifications {
-			@NotificationItem(item.Title, item.Content)
+			@NotificationItem(item.Title, item.Message)
 		}
 	</ol>
 }

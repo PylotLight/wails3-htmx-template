@@ -148,19 +148,25 @@ func NewMuxRouter() *http.ServeMux {
 			activeStates.Notifications = ""
 			activeStates.Settings = "active"
 		}
-		templ.Handler(components.Systray(activeStates, types.Notifications.GetNotifications())).ServeHTTP(w, r)
+		templ.Handler(components.Systray(activeStates, types.Notifications.GetLatestNotificationsSinceLastPoll())).ServeHTTP(w, r)
 	})
 
-	m.HandleFunc("/notifications", templ.Handler(components.SystrayContent(types.Notifications.GetNotifications())).ServeHTTP)
+	// m.HandleFunc("/notifications", templ.Handler(components.SystrayContent(types.Notifications.GetNotifications())).ServeHTTP)
+	m.HandleFunc("/notifications", func(w http.ResponseWriter, r *http.Request) {
+		templ.Handler(components.SystrayContent(types.Notifications.GetLatestNotificationsSinceLastPoll())).ServeHTTP(w, r)
+	})
 	return m
 }
 
 func notificationLoop() {
 	// Loop to add new demo notifications every second
+	id := 0
 	for {
-		types.Notifications.NotificationChannel <- []types.Notification{{Title: "Demo Notification", Content: fmt.Sprintf("This is a demo notification at %v", time.Now().Format(time.Stamp))}}
+		types.Notifications.NotificationChannel <- []types.Notification{{ID: id, Title: fmt.Sprintf("Demo notification %v", id), Message: fmt.Sprintf("This is a demo notification at %v", time.Now().Format(time.Stamp))}}
+		id++
 		// Wait for a second before sending the next notification
 		time.Sleep(2 * time.Second)
+		println("Added demo notification")
 	}
 }
 

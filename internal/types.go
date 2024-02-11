@@ -11,15 +11,22 @@ type Systray struct {
 	Settings      string
 }
 
+// type Notification struct {
+// 	Title   string
+// 	Content string
+// }
+
 type Notification struct {
+	ID      int
 	Title   string
-	Content string
+	Message string
 }
 
 type NotificationData struct {
 	NotificationsMutex  sync.Mutex
 	ActiveNotifications []Notification
 	NotificationChannel chan []Notification
+	lastPolledIndex     int
 }
 
 var Notifications = NotificationData{
@@ -33,9 +40,18 @@ type NotificationAccessor interface {
 	AddNotification(notification Notification)
 }
 
+func (n *NotificationData) GetLatestNotificationsSinceLastPoll() []Notification {
+	n.NotificationsMutex.Lock()
+	defer n.NotificationsMutex.Unlock()
+	newNotifications := n.ActiveNotifications[n.lastPolledIndex:]
+	n.lastPolledIndex = len(n.ActiveNotifications)
+	return newNotifications
+}
+
 func (n *NotificationData) GetNotifications() []Notification {
 	n.NotificationsMutex.Lock()
 	defer n.NotificationsMutex.Unlock()
+	println(n.ActiveNotifications)
 	return n.ActiveNotifications
 }
 

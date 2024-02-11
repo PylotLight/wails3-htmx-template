@@ -24,7 +24,7 @@ func InitContent() http.HandlerFunc {
 			components.Index().Render(ctx, w)
 		}
 		if windowID == "2" {
-			components.Systray(types.Systray{Notifications: "active", Settings: ""}, types.Notifications.GetNotifications()).Render(ctx, w)
+			components.Systray(types.Systray{Notifications: "active", Settings: ""}, types.Notifications.GetLatestNotificationsSinceLastPoll()).Render(ctx, w)
 		}
 	}
 }

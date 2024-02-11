@@ -256,7 +256,7 @@ func Systray(status types.Systray, notifications []types.Notification) templ.Com
 			templ_7745c5c3_Var9 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div hx-get=\"/notifications\" hx-trigger=\"every 1s\" hx-target=\"this\">")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div hx-get=\"/notifications\" hx-trigger=\"every 2s\" hx-target=\"this\" hx-swap=\"beforeend\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -297,7 +297,7 @@ func SystrayContent(notifications []types.Notification) templ.Component {
 			return templ_7745c5c3_Err
 		}
 		for _, item := range notifications {
-			templ_7745c5c3_Err = NotificationItem(item.Title, item.Content).Render(ctx, templ_7745c5c3_Buffer)
+			templ_7745c5c3_Err = NotificationItem(item.Title, item.Message).Render(ctx, templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
