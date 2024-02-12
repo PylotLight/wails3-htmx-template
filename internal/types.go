@@ -48,7 +48,7 @@ func (n *NotificationData) GetLatestNotificationsSinceLastPoll() []Notification 
 	return newNotifications
 }
 
-func (n *NotificationData) GetNotifications() []Notification {
+func (n *NotificationData) GetAllNotifications() []Notification {
 	n.NotificationsMutex.Lock()
 	defer n.NotificationsMutex.Unlock()
 	println(n.ActiveNotifications)

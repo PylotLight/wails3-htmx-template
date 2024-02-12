@@ -130,7 +130,7 @@ func NewMuxRouter() *http.ServeMux {
 			types.Notifications.NotificationsMutex.Lock()
 			types.Notifications.ActiveNotifications = append(types.Notifications.ActiveNotifications, n...)
 			types.Notifications.NotificationsMutex.Unlock()
-			time.Sleep(1 * time.Second)
+			time.Sleep(2 * time.Second)
 		}
 	}()
 
@@ -144,7 +144,7 @@ func NewMuxRouter() *http.ServeMux {
 		case "notifications":
 			activeStates.Notifications = "active"
 			activeStates.Settings = ""
-			templ.Handler(components.Systray(activeStates, types.Notifications.GetLatestNotificationsSinceLastPoll(), types.Settings{})).ServeHTTP(w, r)
+			templ.Handler(components.Systray(activeStates, types.Notifications.GetAllNotifications(), types.Settings{})).ServeHTTP(w, r)
 		case "settings":
 			activeStates.Notifications = ""
 			activeStates.Settings = "active"
