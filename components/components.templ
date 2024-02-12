@@ -118,7 +118,7 @@ templ Index() {
 		<div>
 			<p>Click on the Wails logo to learn more</p>
 		</div>
-		<div hx-sse="connect:/time">
+		<div hx-get="/time" hx-trigger="every 1s" hx-target="#time">
 			<p hx-trigger="sse:time" id="time">Listening for Time event...</p>
 		</div>
 	</div>

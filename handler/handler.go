@@ -51,7 +51,7 @@ func NotificationsHandler(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			types.Notifications.AddNotification(types.Notification{Title: "Failed to delete ID", Message: "Failed to delete ID"})
 		}
-		types.Notifications.AddNotification(types.Notification{Title: "Successfully deleted ID: " + idValue, Message: "Notification Cleared"})
+		// types.Notifications.AddNotification(types.Notification{Title: "Successfully deleted ID: " + idValue, Message: "Notification Cleared"})
 		templ.Handler(components.Notifications(types.Notifications.GetAllNotifications())).ServeHTTP(w, r)
 	}
 

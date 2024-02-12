@@ -136,6 +136,9 @@ func NewMuxRouter() *http.ServeMux {
 	m.HandleFunc("/init", handler.InitContent())
 	m.HandleFunc("/greet", components.Greet)
 	m.HandleFunc("/counter", handler.CounterHandler(c))
+	m.HandleFunc("/time", func(w http.ResponseWriter, r *http.Request) {
+		fmt.Fprintln(w, "Current time:", time.Now().Format(time.Stamp))
+	})
 	m.HandleFunc("/systray/{button}", handler.SysTrayHandler)
 	m.HandleFunc("/notifications", handler.NotificationsHandler)
 	m.HandleFunc("DELETE /notifications/{id}", handler.NotificationsHandler)
@@ -150,7 +153,7 @@ func notificationLoop() {
 		id++
 		// Wait for a second before sending the next notification
 		time.Sleep(2 * time.Second)
-		println("Added demo notification", id)
+		// println("Added demo notification", id)
 	}
 }
 

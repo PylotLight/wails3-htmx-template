@@ -429,7 +429,7 @@ func Index() templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div><div class=\"footer\"><div><p>Click on the Wails logo to learn more</p></div><div hx-sse=\"connect:/time\"><p hx-trigger=\"sse:time\" id=\"time\">Listening for Time event...</p></div></div><script type=\"module\">\n    import { Events } from \"@wailsio/runtime\";\n        Events.On('time', (time) => {\n\t\t\ttimeElement = document.queryselector(\"#time\")\n\t\t\tconsole.log(\"test\")\n            timeElement.innerText = time.data;\n        });\n    </script>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div><div class=\"footer\"><div><p>Click on the Wails logo to learn more</p></div><div hx-get=\"/time\" hx-trigger=\"every 1s\" hx-target=\"#time\"><p hx-trigger=\"sse:time\" id=\"time\">Listening for Time event...</p></div></div><script type=\"module\">\n    import { Events } from \"@wailsio/runtime\";\n        Events.On('time', (time) => {\n\t\t\ttimeElement = document.queryselector(\"#time\")\n\t\t\tconsole.log(\"test\")\n            timeElement.innerText = time.data;\n        });\n    </script>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
