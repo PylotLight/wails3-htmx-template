@@ -129,7 +129,7 @@ func NewMuxRouter() *http.ServeMux {
 			types.Notifications.NotificationsMutex.Lock()
 			types.Notifications.ActiveNotifications = append(types.Notifications.ActiveNotifications, n...)
 			types.Notifications.NotificationsMutex.Unlock()
-			time.Sleep(2 * time.Second)
+			time.Sleep(1 * time.Second)
 		}
 	}()
 

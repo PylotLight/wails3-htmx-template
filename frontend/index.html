@@ -16,14 +16,6 @@
             hx-target="#app">
         </div>
     </div>
-    <script type="module">
-        import { Events } from "@wailsio/runtime";
-        console.log("tes1t1")
-        Events.On('time', (time) => {
-            timeElement = document.queryselector("#time")
-            console.log("test")
-            timeElement.innerText = time.data;
-        });
-    </script>
 </body>
+
 </html>
