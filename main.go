@@ -11,7 +11,6 @@ import (
 	"wails3-htmx-template/handler"
 	types "wails3-htmx-template/internal"
 
-	"github.com/a-h/templ"
 	"github.com/wailsapp/wails/v3/pkg/application"
 )
 
@@ -137,26 +136,9 @@ func NewMuxRouter() *http.ServeMux {
 	m.HandleFunc("/init", handler.InitContent())
 	m.HandleFunc("/greet", components.Greet)
 	m.HandleFunc("/counter", handler.CounterHandler(c))
-	m.HandleFunc("/systray/{button}", func(w http.ResponseWriter, r *http.Request) {
-		button := r.PathValue("button")
-		activeStates := types.Systray{}
-		switch button {
-		case "notifications":
-			activeStates.Notifications = "active"
-			activeStates.Settings = ""
-			templ.Handler(components.Systray(activeStates, types.Notifications.GetAllNotifications(), types.Settings{})).ServeHTTP(w, r)
-		case "settings":
-			activeStates.Notifications = ""
-			activeStates.Settings = "active"
-			templ.Handler(components.Systray(activeStates, nil, types.Settings{DatabaseLocation: "SamplePath", SecretToken: "****"})).ServeHTTP(w, r)
-		}
-
-	})
-
-	// m.HandleFunc("/notifications", templ.Handler(components.SystrayContent(types.Notifications.GetNotifications())).ServeHTTP)
-	m.HandleFunc("/notifications", func(w http.ResponseWriter, r *http.Request) {
-		templ.Handler(components.Notifications(types.Notifications.GetLatestNotificationsSinceLastPoll())).ServeHTTP(w, r)
-	})
+	m.HandleFunc("/systray/{button}", handler.SysTrayHandler)
+	m.HandleFunc("/notifications", handler.NotificationsHandler)
+	m.HandleFunc("DELETE /notifications/{id}", handler.NotificationsHandler)
 	return m
 }
 
@@ -168,7 +150,7 @@ func notificationLoop() {
 		id++
 		// Wait for a second before sending the next notification
 		time.Sleep(2 * time.Second)
-		println("Added demo notification")
+		println("Added demo notification", id)
 	}
 }
 

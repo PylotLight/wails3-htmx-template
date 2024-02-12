@@ -1,5 +1,6 @@
 package components
 
+import "fmt"
 import "net/http"
 import "wails3-htmx-template/internal"
 
@@ -13,13 +14,13 @@ templ TextInput(name string, label string, endpoint string, hxTarget string, hxT
 	<input type="text" name={ name } placeholder={ label } hx-get={ endpoint } hx-target={ hxTarget } class="input input-ghost w-full max-w-xs" hx-trigger={ hxTrigger } autocomplete="off"/>
 }
 
-templ NotificationItem(AlertTitle string, AlertContent string) {
+templ NotificationItem(Index int, AlertTitle string, AlertContent string) {
 	<li class="py-2">
 		<div tabindex="0" class="collapse bg-base-200">
 			<div class="collapse-title text-xl font-medium">
 				{ AlertTitle }
 			</div>
-			<div class="collapse-content">
+			<div class="collapse-content" hx-delete={ fmt.Sprintf("/notifications/%v", Index) } hx-trigger="click" hx-swap="innerHTML">
 				<p>{ AlertContent }</p>
 			</div>
 		</div>
@@ -72,7 +73,7 @@ templ Systray(status types.Systray, notifications []types.Notification, settings
 
 templ Notifications(notifications []types.Notification) {
 	for _, item := range notifications {
-		@NotificationItem(item.Title, item.Message)
+		@NotificationItem(item.ID, item.Title, item.Message)
 	}
 }
 

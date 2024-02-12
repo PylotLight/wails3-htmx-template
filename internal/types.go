@@ -51,12 +51,27 @@ func (n *NotificationData) GetLatestNotificationsSinceLastPoll() []Notification 
 func (n *NotificationData) GetAllNotifications() []Notification {
 	n.NotificationsMutex.Lock()
 	defer n.NotificationsMutex.Unlock()
-	println(n.ActiveNotifications)
-	return n.ActiveNotifications
+	newNotifications := n.ActiveNotifications[:n.lastPolledIndex]
+	return newNotifications
 }
 
 func (n *NotificationData) AddNotification(notification Notification) {
 	n.NotificationsMutex.Lock()
 	defer n.NotificationsMutex.Unlock()
 	n.ActiveNotifications = append(n.ActiveNotifications, notification)
+}
+
+func (n *NotificationData) DeleteNotification(id int) error {
+	n.NotificationsMutex.Lock()
+	defer n.NotificationsMutex.Unlock()
+
+	// Find the index of the notification with the given ID
+	for i, notification := range n.ActiveNotifications {
+		if notification.ID == id {
+			n.ActiveNotifications = append(n.ActiveNotifications[:i], n.ActiveNotifications[i+1:]...)
+			return nil
+		}
+	}
+
+	return nil
 }
