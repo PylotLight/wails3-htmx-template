@@ -7,7 +7,7 @@ import "wails3-htmx-template/internal"
 // New Templates
 // Inputs
 templ Button(label string, endpoint string, hxTarget string) {
-	<button class="btn btn-active btn-neutral" hx-get={ endpoint } hx-target={ hxTarget }>{ label }</button>
+	<button class="btn btn-active btn-neutral ml-4" hx-get={ endpoint } hx-target={ hxTarget }>{ label }</button>
 }
 
 templ TextInput(name string, label string, endpoint string, hxTarget string, hxTrigger string) {
@@ -101,16 +101,16 @@ templ TrayNavBar(status types.Systray) {
 }
 
 templ Index() {
-	<div>
+	<div class="flex items-center justify-center py-12 px-6">
 		<a wml-openURL="https://wails.io">
-			<img src="/wails.png" class="logo" alt="Wails logo"/>
+			<img src="/wails.png" class="h-32 p-4 mx-auto hover:opacity-80" alt="Wails logo"/>
 		</a>
 		<a wml-openURL="https://developer.mozilla.org/en-US/docs/Web/JavaScript">
-			<img src="/javascript.svg" class="logo vanilla" alt="JavaScript logo"/>
+			<img src="/javascript.svg" class="h-32 p-4 mx-auto hover:opacity-80" alt="JavaScript logo"/>
 		</a>
 	</div>
-	<h1>Wails + HTMX</h1>
-	<div class="card">
+	<h1 class="block text-4xl font-bold leading-tight">Wails + HTMX</h1>
+	<div class="flex flex-col items-center justify-center mt-4 gap-4">
 		@GreetForm()
 		@Button("count is 0", "/counter", "this")
 	</div>

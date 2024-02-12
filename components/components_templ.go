@@ -29,7 +29,7 @@ func Button(label string, endpoint string, hxTarget string) templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<button class=\"btn btn-active btn-neutral\" hx-get=\"")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<button class=\"btn btn-active btn-neutral ml-4\" hx-get=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -52,7 +52,7 @@ func Button(label string, endpoint string, hxTarget string) templ.Component {
 		var templ_7745c5c3_Var2 string
 		templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(label)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/components.templ`, Line: 9, Col: 94}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/components.templ`, Line: 9, Col: 99}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var2))
 		if templ_7745c5c3_Err != nil {
@@ -417,7 +417,7 @@ func Index() templ.Component {
 			templ_7745c5c3_Var15 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div><a wml-openURL=\"https://wails.io\"><img src=\"/wails.png\" class=\"logo\" alt=\"Wails logo\"></a> <a wml-openURL=\"https://developer.mozilla.org/en-US/docs/Web/JavaScript\"><img src=\"/javascript.svg\" class=\"logo vanilla\" alt=\"JavaScript logo\"></a></div><h1>Wails + HTMX</h1><div class=\"card\">")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"flex items-center justify-center py-12 px-6\"><a wml-openURL=\"https://wails.io\"><img src=\"/wails.png\" class=\"h-32 p-4 mx-auto hover:opacity-80\" alt=\"Wails logo\"></a> <a wml-openURL=\"https://developer.mozilla.org/en-US/docs/Web/JavaScript\"><img src=\"/javascript.svg\" class=\"h-32 p-4 mx-auto hover:opacity-80\" alt=\"JavaScript logo\"></a></div><h1 class=\"block text-4xl font-bold leading-tight\">Wails + HTMX</h1><div class=\"flex flex-col items-center justify-center mt-4 gap-4\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -429,7 +429,7 @@ func Index() templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div><div class=\"footer\"><div><p>Click on the Wails logo to learn more</p></div><div hx-get=\"/time\" hx-trigger=\"every 1s\" hx-target=\"#time\"><p hx-trigger=\"sse:time\" id=\"time\">Listening for Time event...</p></div></div><script type=\"module\">\n    import { Events } from \"@wailsio/runtime\";\n        Events.On('time', (time) => {\n\t\t\ttimeElement = document.queryselector(\"#time\")\n\t\t\tconsole.log(\"test\")\n            timeElement.innerText = time.data;\n        });\n    </script>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div><div class=\"footer\"><div><p>Click on the Wails logo to learn more</p></div><div hx-get=\"/time\" hx-trigger=\"every 1s\" hx-target=\"#time\"><p id=\"time\">Listening for Time event...</p></div></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -478,7 +478,7 @@ func twButton(label string) templ.Component {
 		var templ_7745c5c3_Var17 string
 		templ_7745c5c3_Var17, templ_7745c5c3_Err = templ.JoinStringErrs(label)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/components.templ`, Line: 157, Col: 9}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/components.templ`, Line: 149, Col: 9}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var17))
 		if templ_7745c5c3_Err != nil {
