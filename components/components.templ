@@ -1,8 +1,10 @@
 package components
 
-import "fmt"
-import "net/http"
-import "wails3-htmx-template/internal"
+import (
+	"fmt"
+	"net/http"
+	types "wails3-htmx-template/internal"
+)
 
 // New Templates
 // Inputs
@@ -11,7 +13,7 @@ templ Button(label string, endpoint string, hxTarget string) {
 }
 
 templ TextInput(name string, label string, endpoint string, hxTarget string, hxTrigger string) {
-	<input type="text" name={ name } placeholder={ label } hx-get={ endpoint } hx-target={ hxTarget } class="input input-ghost w-full max-w-xs" hx-trigger={ hxTrigger } autocomplete="off"/>
+	<input type="text" name={ name } placeholder={ label } hx-get={ endpoint } hx-target={ hxTarget } class="input input-bordered w-full max-w-xs" hx-trigger={ hxTrigger } autocomplete="off"/>
 }
 
 templ NotificationItem(Index int, AlertTitle string, AlertContent string) {
@@ -25,27 +27,26 @@ templ NotificationItem(Index int, AlertTitle string, AlertContent string) {
 			</div>
 		</div>
 	</li>
-	// <li class="py-2">
-	// 	<div tabindex="0" class="collapse bg-base-200 p-4 rounded-lg bg-gray-200 rounded-md bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-20 border border-gray-100 hover:bg-opacity-10">
-	// 		<div class="collapse-title text-xl font-medium">
-	// 			{ AlertTitle }
-	// 		</div>
-	// 		<div class="collapse-content">
-	// 			<p>{ AlertContent } </p>
-	// 		</div>
-	// 	</div>
-	// </li>
 }
 
 // Forms
 templ Count(count string) {
-	@Button("count is "+count, "", "")
+	@Button("Count is "+count, "", "")
 }
 
 templ GreetForm() {
 	<div class="result" id="result">Please enter your name below 👇</div>
 	@TextInput("name", "Enter Name", "/greet", "#result", "keyup changed delay:100ms")
 }
+
+// templ Greet(name string) {
+// 	switch name {
+// 		case "":
+// 			<p>Hello { name }, It's show time!</p>
+// 		default:
+// 			<p>Please enter your name below 👇</p>
+// 	}
+// }
 
 func Greet(w http.ResponseWriter, r *http.Request) {
 	if r.FormValue("name") != "" {
@@ -56,11 +57,9 @@ func Greet(w http.ResponseWriter, r *http.Request) {
 }
 
 templ Systray(status types.Systray, notifications []types.Notification, settings types.Settings) {
-	// just the body loaded into systray. daisyui nav with content loaded in above.
-	//
 	if status.Notifications == "active" {
 		<div>
-			<ol class="space-4" hx-get="/notifications" hx-trigger="every 2s" hx-target="this" hx-swap="beforeend">
+			<ol class="space-4" hx-get="/notifications" hx-trigger="every 10s" hx-target="this" hx-swap="beforeend">
 				@Notifications(notifications)
 			</ol>
 		</div>
@@ -93,10 +92,6 @@ templ TrayNavBar(status types.Systray) {
 			<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
 			<span class="btm-nav-label">Settings</span>
 		</button>
-		//   <button>
-		//     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" /></svg>
-		//     <span class="btm-nav-label">Updates</span>
-		//   </button>
 	</div>
 }
 
@@ -108,104 +103,21 @@ templ Index() {
 		<a wml-openURL="https://developer.mozilla.org/en-US/docs/Web/JavaScript">
 			<img src="/javascript.svg" class="h-32 p-4 mx-auto hover:opacity-80" alt="JavaScript logo"/>
 		</a>
+		<a href="/api/hello/test" target="_blank">
+			<img src="" class="h-32 p-4 mx-auto hover:opacity-80" alt="JavaScript logo"/>
+		</a>
 	</div>
 	<h1 class="block text-4xl font-bold leading-tight">Wails + HTMX</h1>
 	<div class="flex flex-col items-center justify-center mt-4 gap-4">
 		@GreetForm()
-		@Button("count is 0", "/counter", "this")
+		@Button("Press to Increment count with HTMX", "/counter", "this")
 	</div>
 	<div class="footer">
 		<div>
 			<p>Click on the Wails logo to learn more</p>
 		</div>
-		<div hx-get="/time" hx-trigger="every 1s" hx-target="#time">
+		<div hx-get="/time" hx-trigger="every 10s" hx-target="#time">
 			<p id="time">Listening for Time event...</p>
 		</div>
 	</div>
-}
-
-// Old Templates
-// templ TextInput(name string, placeholder string, method string,endpoint string,hxTrigger string) {
-// 	<input
-// 		type="text"
-// 		name={ name }
-// 		placeholder={ placeholder }
-// 		hx-target="#result"
-// 		if method == "get" {
-// 			hx-get={ endpoint }
-// 		}
-// 		if method == "post" {
-// 			hx-post={ endpoint }
-// 		}
-// 		hx-trigger={ hxTrigger }
-// 		class={ "input join-item input-bordered input-primary w-full max-w-xs px-4 py-3 my-8" }
-// 	/>
-// }
-templ twButton(label string) {
-	<button
-		class="w-full px-4 py-6 rounded-md font-semibold backdrop-filter backdrop-blur-lg backdrop-saturate-[180%] bg-[rgba(19,_48,_97,_0.75)] rounded-[12px] border-[1px] border-[solid] border-[rgba(255,255,255,0.125)] text-gray-300 hover:bg-gray-800 hover:text-white"
-		type="button"
-		hx-get="/counter"
-		hx-target="this"
-	>{ label }</button>
-}
-
-templ Index_Old() {
-	<div class="block">
-		<a
-			href="https://wails.io"
-			class="inline font-medium text-[#646cff] [text-decoration:inherit] hover:text-[#535bf2]"
-			target="_blank"
-		>
-			<img
-				src="/wails.png"
-				class="logo inline h-[6em] p-[0.5em] hover:[filter:drop-shadow(0_0_2em_#646cffaa)]"
-				alt="Wails logo"
-			/>
-		</a>
-		<a
-			href="https://developer.mozilla.org/en-US/docs/Web/JavaScript"
-			class="inline font-medium text-[#646cff] [text-decoration:inherit] hover:text-[#535bf2]"
-			target="_blank"
-		>
-			<img
-				src="/javascript.svg"
-				class="logo vanilla inline h-[6em] p-[0.5em] hover:[filter:drop-shadow(0_0_2em_#646cffaa)] hover:[filter:drop-shadow(0_0_2em_#f7df1eaa)]"
-				alt="JavaScript logo"
-			/>
-		</a>
-		<h1 class="mt-10 mb-10 text-[3.2em] leading-[1.1] font-semibold block font-bold">
-			Hello Wails!
-		</h1>
-		<div class="card p-[2em]">
-			<div class="flex justify-around items-center">
-				<label>JS Button</label>
-				<label>HTMX Button</label>
-			</div>
-			<div class="flex justify-around items-center">
-				<button
-					class="rounded-[8px] border-[1px] border-[solid] border-[transparent] px-[1.2em] py-[0.6em] text-[1em] font-medium [font-family:inherit] bg-[#1a1a1a] cursor-pointer [transition:border-color_0.25s] hover:border-[#646cff] outline-[4px_auto_-webkit-focus-ring-color]"
-					id="counter"
-					type="button"
-				>count is 0</button>
-				<button
-					class="rounded-[8px] border-[1px] border-[solid] border-[transparent] px-[1.2em] py-[0.6em] text-[1em] font-medium [font-family:inherit] bg-[#1a1a1a] cursor-pointer [transition:border-color_0.25s] hover:border-[#646cff] outline-[4px_auto_-webkit-focus-ring-color]"
-					type="button"
-					hx-get="/counter"
-					hx-target="this"
-				>count is 0</button>
-			</div>
-		</div>
-		<p class="read-the-docs text-[#888]">
-			Click on the Wails logo to learn more
-		</p>
-	</div>
-	<script>
-  let count = 0;
-  const Button = document.getElementById("counter");
-  Button.addEventListener("click", () => {
-    count++;
-    Button.innerHTML = `count is ${count}`;
-  });
-</script>
 }

@@ -10,9 +10,11 @@ import "context"
 import "io"
 import "bytes"
 
-import "fmt"
-import "net/http"
-import "wails3-htmx-template/internal"
+import (
+	"fmt"
+	"net/http"
+	types "wails3-htmx-template/internal"
+)
 
 // New Templates
 // Inputs
@@ -52,7 +54,7 @@ func Button(label string, endpoint string, hxTarget string) templ.Component {
 		var templ_7745c5c3_Var2 string
 		templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(label)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/components.templ`, Line: 9, Col: 99}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/components.templ`, Line: 11, Col: 99}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var2))
 		if templ_7745c5c3_Err != nil {
@@ -114,7 +116,7 @@ func TextInput(name string, label string, endpoint string, hxTarget string, hxTr
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" class=\"input input-ghost w-full max-w-xs\" hx-trigger=\"")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" class=\"input input-bordered w-full max-w-xs\" hx-trigger=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -153,7 +155,7 @@ func NotificationItem(Index int, AlertTitle string, AlertContent string) templ.C
 		var templ_7745c5c3_Var5 string
 		templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(AlertTitle)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/components.templ`, Line: 20, Col: 16}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/components.templ`, Line: 22, Col: 16}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
 		if templ_7745c5c3_Err != nil {
@@ -174,7 +176,7 @@ func NotificationItem(Index int, AlertTitle string, AlertContent string) templ.C
 		var templ_7745c5c3_Var6 string
 		templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(AlertContent)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/components.templ`, Line: 23, Col: 21}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/components.templ`, Line: 25, Col: 21}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
 		if templ_7745c5c3_Err != nil {
@@ -205,7 +207,7 @@ func Count(count string) templ.Component {
 			templ_7745c5c3_Var7 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = Button("count is "+count, "", "").Render(ctx, templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = Button("Count is "+count, "", "").Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -244,6 +246,15 @@ func GreetForm() templ.Component {
 	})
 }
 
+// templ Greet(name string) {
+// 	switch name {
+// 		case "":
+// 			<p>Hello { name }, It's show time!</p>
+// 		default:
+// 			<p>Please enter your name below 👇</p>
+// 	}
+// }
+
 func Greet(w http.ResponseWriter, r *http.Request) {
 	if r.FormValue("name") != "" {
 		w.Write([]byte("Hello " + r.FormValue("name") + ", It's show time!"))
@@ -266,7 +277,7 @@ func Systray(status types.Systray, notifications []types.Notification, settings 
 		}
 		ctx = templ.ClearChildren(ctx)
 		if status.Notifications == "active" {
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div><ol class=\"space-4\" hx-get=\"/notifications\" hx-trigger=\"every 2s\" hx-target=\"this\" hx-swap=\"beforeend\">")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div><ol class=\"space-4\" hx-get=\"/notifications\" hx-trigger=\"every 10s\" hx-target=\"this\" hx-swap=\"beforeend\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -417,7 +428,7 @@ func Index() templ.Component {
 			templ_7745c5c3_Var15 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"flex items-center justify-center py-12 px-6\"><a wml-openURL=\"https://wails.io\"><img src=\"/wails.png\" class=\"h-32 p-4 mx-auto hover:opacity-80\" alt=\"Wails logo\"></a> <a wml-openURL=\"https://developer.mozilla.org/en-US/docs/Web/JavaScript\"><img src=\"/javascript.svg\" class=\"h-32 p-4 mx-auto hover:opacity-80\" alt=\"JavaScript logo\"></a></div><h1 class=\"block text-4xl font-bold leading-tight\">Wails + HTMX</h1><div class=\"flex flex-col items-center justify-center mt-4 gap-4\">")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"flex items-center justify-center py-12 px-6\"><a wml-openURL=\"https://wails.io\"><img src=\"/wails.png\" class=\"h-32 p-4 mx-auto hover:opacity-80\" alt=\"Wails logo\"></a> <a wml-openURL=\"https://developer.mozilla.org/en-US/docs/Web/JavaScript\"><img src=\"/javascript.svg\" class=\"h-32 p-4 mx-auto hover:opacity-80\" alt=\"JavaScript logo\"></a> <a href=\"/api/hello/test\" target=\"_blank\"><img src=\"\" class=\"h-32 p-4 mx-auto hover:opacity-80\" alt=\"JavaScript logo\"></a></div><h1 class=\"block text-4xl font-bold leading-tight\">Wails + HTMX</h1><div class=\"flex flex-col items-center justify-center mt-4 gap-4\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -425,90 +436,11 @@ func Index() templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = Button("count is 0", "/counter", "this").Render(ctx, templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = Button("Press to Increment count with HTMX", "/counter", "this").Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div><div class=\"footer\"><div><p>Click on the Wails logo to learn more</p></div><div hx-get=\"/time\" hx-trigger=\"every 1s\" hx-target=\"#time\"><p id=\"time\">Listening for Time event...</p></div></div>")
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		if !templ_7745c5c3_IsBuffer {
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteTo(templ_7745c5c3_W)
-		}
-		return templ_7745c5c3_Err
-	})
-}
-
-// Old Templates
-//
-//	templ TextInput(name string, placeholder string, method string,endpoint string,hxTrigger string) {
-//		<input
-//			type="text"
-//			name={ name }
-//			placeholder={ placeholder }
-//			hx-target="#result"
-//			if method == "get" {
-//				hx-get={ endpoint }
-//			}
-//			if method == "post" {
-//				hx-post={ endpoint }
-//			}
-//			hx-trigger={ hxTrigger }
-//			class={ "input join-item input-bordered input-primary w-full max-w-xs px-4 py-3 my-8" }
-//		/>
-//	}
-func twButton(label string) templ.Component {
-	return templ.ComponentFunc(func(ctx context.Context, templ_7745c5c3_W io.Writer) (templ_7745c5c3_Err error) {
-		templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templ_7745c5c3_W.(*bytes.Buffer)
-		if !templ_7745c5c3_IsBuffer {
-			templ_7745c5c3_Buffer = templ.GetBuffer()
-			defer templ.ReleaseBuffer(templ_7745c5c3_Buffer)
-		}
-		ctx = templ.InitializeContext(ctx)
-		templ_7745c5c3_Var16 := templ.GetChildren(ctx)
-		if templ_7745c5c3_Var16 == nil {
-			templ_7745c5c3_Var16 = templ.NopComponent
-		}
-		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<button class=\"w-full px-4 py-6 rounded-md font-semibold backdrop-filter backdrop-blur-lg backdrop-saturate-[180%] bg-[rgba(19,_48,_97,_0.75)] rounded-[12px] border-[1px] border-[solid] border-[rgba(255,255,255,0.125)] text-gray-300 hover:bg-gray-800 hover:text-white\" type=\"button\" hx-get=\"/counter\" hx-target=\"this\">")
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		var templ_7745c5c3_Var17 string
-		templ_7745c5c3_Var17, templ_7745c5c3_Err = templ.JoinStringErrs(label)
-		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/components.templ`, Line: 149, Col: 9}
-		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var17))
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</button>")
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		if !templ_7745c5c3_IsBuffer {
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteTo(templ_7745c5c3_W)
-		}
-		return templ_7745c5c3_Err
-	})
-}
-
-func Index_Old() templ.Component {
-	return templ.ComponentFunc(func(ctx context.Context, templ_7745c5c3_W io.Writer) (templ_7745c5c3_Err error) {
-		templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templ_7745c5c3_W.(*bytes.Buffer)
-		if !templ_7745c5c3_IsBuffer {
-			templ_7745c5c3_Buffer = templ.GetBuffer()
-			defer templ.ReleaseBuffer(templ_7745c5c3_Buffer)
-		}
-		ctx = templ.InitializeContext(ctx)
-		templ_7745c5c3_Var18 := templ.GetChildren(ctx)
-		if templ_7745c5c3_Var18 == nil {
-			templ_7745c5c3_Var18 = templ.NopComponent
-		}
-		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"block\"><a href=\"https://wails.io\" class=\"inline font-medium text-[#646cff] [text-decoration:inherit] hover:text-[#535bf2]\" target=\"_blank\"><img src=\"/wails.png\" class=\"logo inline h-[6em] p-[0.5em] hover:[filter:drop-shadow(0_0_2em_#646cffaa)]\" alt=\"Wails logo\"></a> <a href=\"https://developer.mozilla.org/en-US/docs/Web/JavaScript\" class=\"inline font-medium text-[#646cff] [text-decoration:inherit] hover:text-[#535bf2]\" target=\"_blank\"><img src=\"/javascript.svg\" class=\"logo vanilla inline h-[6em] p-[0.5em] hover:[filter:drop-shadow(0_0_2em_#646cffaa)] hover:[filter:drop-shadow(0_0_2em_#f7df1eaa)]\" alt=\"JavaScript logo\"></a><h1 class=\"mt-10 mb-10 text-[3.2em] leading-[1.1] font-semibold block font-bold\">Hello Wails!</h1><div class=\"card p-[2em]\"><div class=\"flex justify-around items-center\"><label>JS Button</label> <label>HTMX Button</label></div><div class=\"flex justify-around items-center\"><button class=\"rounded-[8px] border-[1px] border-[solid] border-[transparent] px-[1.2em] py-[0.6em] text-[1em] font-medium [font-family:inherit] bg-[#1a1a1a] cursor-pointer [transition:border-color_0.25s] hover:border-[#646cff] outline-[4px_auto_-webkit-focus-ring-color]\" id=\"counter\" type=\"button\">count is 0</button> <button class=\"rounded-[8px] border-[1px] border-[solid] border-[transparent] px-[1.2em] py-[0.6em] text-[1em] font-medium [font-family:inherit] bg-[#1a1a1a] cursor-pointer [transition:border-color_0.25s] hover:border-[#646cff] outline-[4px_auto_-webkit-focus-ring-color]\" type=\"button\" hx-get=\"/counter\" hx-target=\"this\">count is 0</button></div></div><p class=\"read-the-docs text-[#888]\">Click on the Wails logo to learn more</p></div><script>\n  let count = 0;\n  const Button = document.getElementById(\"counter\");\n  Button.addEventListener(\"click\", () => {\n    count++;\n    Button.innerHTML = `count is ${count}`;\n  });\n</script>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div><div class=\"footer\"><div><p>Click on the Wails logo to learn more</p></div><div hx-get=\"/time\" hx-trigger=\"every 10s\" hx-target=\"#time\"><p id=\"time\">Listening for Time event...</p></div></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

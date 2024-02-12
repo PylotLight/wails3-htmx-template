@@ -33,7 +33,8 @@ func InitContent() http.HandlerFunc {
 func CounterHandler(c *types.Counter) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		c.Count++
-		w.Write([]byte("count is " + strconv.Itoa(c.Count)))
+		// templ.Handler(components.Count(strconv.Itoa(c.Count)))
+		w.Write([]byte("Count is " + strconv.Itoa(c.Count)))
 	}
 }
 

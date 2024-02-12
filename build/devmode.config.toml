@@ -31,5 +31,5 @@ blocking = true
 cmd = "KILL_STALE"
 
 [[config.executes]]
-cmd = "./bin/wails3-htmx-template.exe"
+cmd = "./bin/wails3-htmx-template.exe serve"
 primary = true

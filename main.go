@@ -5,12 +5,18 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 	"time"
 
 	"wails3-htmx-template/components"
 	"wails3-htmx-template/handler"
 	types "wails3-htmx-template/internal"
 
+	"github.com/labstack/echo/v5"
+	"github.com/pocketbase/pocketbase"
+	"github.com/pocketbase/pocketbase/apis"
+	"github.com/pocketbase/pocketbase/cmd"
+	"github.com/pocketbase/pocketbase/core"
 	"github.com/wailsapp/wails/v3/pkg/application"
 )
 
@@ -50,6 +56,9 @@ func main() {
 			ApplicationShouldTerminateAfterLastWindowClosed: true,
 		},
 	})
+
+	go initializePocketbase()
+	// serves static files from the provided public dir (if exists)
 
 	// Create a new window with the necessary options.
 	// 'Title' is the title of the window.
@@ -116,6 +125,30 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+}
+
+func initializePocketbase() {
+
+	app := pocketbase.New()
+
+	app.OnBeforeServe().Add(func(e *core.ServeEvent) error {
+		e.Router.GET("/*", apis.StaticDirectoryHandler(os.DirFS("./pb_public"), false))
+		e.Router.GET("/hello/:name", func(c echo.Context) error {
+			name := c.PathParam("name")
+
+			return c.JSON(http.StatusOK, map[string]string{"message": "Hello " + name})
+		} /* optional middlewares */)
+		e.Router.GET("/hello/", func(c echo.Context) error {
+			return c.JSON(http.StatusOK, map[string]string{"message": "Hello from pocketbase"})
+		})
+		return nil
+	})
+	println("Starting Pocketbase..")
+	app.Bootstrap()
+
+	serveCmd := cmd.NewServeCommand(app, true)
+
+	serveCmd.Execute()
 }
 
 func NewMuxRouter() *http.ServeMux {
