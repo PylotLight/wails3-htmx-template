@@ -119,17 +119,9 @@ templ Index() {
 			<p>Click on the Wails logo to learn more</p>
 		</div>
 		<div hx-get="/time" hx-trigger="every 1s" hx-target="#time">
-			<p hx-trigger="sse:time" id="time">Listening for Time event...</p>
+			<p id="time">Listening for Time event...</p>
 		</div>
 	</div>
-	<script type="module">
-    import { Events } from "@wailsio/runtime";
-        Events.On('time', (time) => {
-			timeElement = document.queryselector("#time")
-			console.log("test")
-            timeElement.innerText = time.data;
-        });
-    </script>
 }
 
 // Old Templates
